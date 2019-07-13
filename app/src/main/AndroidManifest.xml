@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Trail_List_Activity" />
+        <activity android:name=".Search_Activity" />
+        <activity android:name=".New_Trail_Activity" />
+
+
     </application>
 
 </manifest>

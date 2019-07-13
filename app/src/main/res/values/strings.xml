@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Hiker</string>
+
+    <!-- New_Trail_Activity -->
+    <string name="trailName_Hint">What is the name of this trail?</string>
+    <string name="trailLength_Hint">Insert trail length here</string>
+    <string name="trailElev_Hint">Insert trail elevation here</string>
 </resources>

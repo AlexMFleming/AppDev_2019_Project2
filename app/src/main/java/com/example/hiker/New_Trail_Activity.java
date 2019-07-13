@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class New_Trail_Activity extends AppCompatActivity {
@@ -21,13 +20,13 @@ public class New_Trail_Activity extends AppCompatActivity {
     }
 
     public void createTrailClick(View view){
-        EditText text = (EditText)findViewById(R.id.trail_name_view);
+        EditText text = (EditText)findViewById(R.id.newTrail_name_entry);
         String trailName = text.getText().toString();
 
-        text = (EditText)findViewById(R.id.elevation_view);
+        text = (EditText)findViewById(R.id.newTrail_elevation_entry);
         int elevation = Integer.parseInt(text.getText().toString());
 
-        text = (EditText)findViewById(R.id.length_view);
+        text = (EditText)findViewById(R.id.newTrail_length_entry);
         int distance = Integer.parseInt(text.getText().toString());
 
 
