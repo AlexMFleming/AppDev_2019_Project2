@@ -11,7 +11,7 @@ public class Search_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_);
+        setContentView(R.layout.activity_search);
     }
 
     public void searchTrails(View view){

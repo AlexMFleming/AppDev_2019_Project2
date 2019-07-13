@@ -15,7 +15,7 @@ public class Trail_List_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trail__list_);
+        setContentView(R.layout.activity_trail_list);
 
         TrailDb = TrailDatabase.getInstance(getApplicationContext());
 
