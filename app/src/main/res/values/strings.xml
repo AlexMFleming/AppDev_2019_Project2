@@ -5,4 +5,17 @@
     <string name="trailName_Hint">What is the name of this trail?</string>
     <string name="trailLength_Hint">Insert trail length here</string>
     <string name="trailElev_Hint">Insert trail elevation here</string>
+    <string name="fivemiles"><![CDATA[>5 Miles]]></string>
+    <string name="fivetotenmiles">5 &#8211; 10 Miles</string>
+    <string name="fifteenmiles"><![CDATA[< 15 Miles]]></string>
+    <string name="sevenhunmiles"><![CDATA[>700 ft]]></string>
+    <string name="sevenhtofivehmiles">700 &#8211; 500 ft</string>
+    <string name="fifteenhmiles"><![CDATA[<1500 ft]]></string>
+    <string name="waterfalls">Waterfalls</string>
+    <string name="creeks">Creeks</string>
+    <string name="wildlife">Wildlife</string>
+    <string name="features">Features?</string>
+    <string name="elevation_change">Elevation Change?</string>
+    <string name="hikelength">How Far Should We Hike?</string>
+    <string name="submit">Submit</string>
 </resources>
