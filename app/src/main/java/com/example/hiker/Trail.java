@@ -14,7 +14,6 @@ public class Trail {
         trail_distance = length;
         elevation = elev;
         features = feat;
-
     }
     public Trail(long id, String trail, int length, int elev, int feat) {
         trail_id=id;
@@ -24,6 +23,7 @@ public class Trail {
         features = feat;
 
     }
+    public long getTrail_id() { return trail_id; }
 
     public void setTrail_id(long id){
         trail_id = id;

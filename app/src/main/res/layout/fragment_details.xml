@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hiker.DetailsFragment">
+
+    <TextView
+        android:id="@+id/trailName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="trail name"/>
+
+    <TextView
+        android:id="@+id/trailDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="description"/>
+
+</LinearLayout>
