@@ -9,9 +9,9 @@ import java.util.List;
 public class Trail_List_Activity extends AppCompatActivity {
 
     private TrailDatabase TrailDb;
-    int distanceUpperBound;
-    int distanceLowerBound;
-    List<String> trailList;
+
+    List<Trail> trailList;
+    String trailnames = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,14 +20,15 @@ public class Trail_List_Activity extends AppCompatActivity {
         TrailDb = TrailDatabase.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
-        distanceLowerBound = intent.getIntExtra("DISTANCE_LOWER_BOUND", -1);
-        distanceUpperBound = intent.getIntExtra("DISTANCE_UPPER_BOUND", -1);
+        trailList=TrailDb.getTrails(intent.getIntExtra("DISTANCE", -1), intent.getIntExtra("ELEVATION", -1), intent.getIntExtra("FEATURE", 0b000));
 
 
-        trailList = TrailDb.getTrails(distanceUpperBound, distanceLowerBound);
+        //trailList = TrailDb.getTrails(distanceUpperBound, distanceLowerBound);
 
         TextView view = findViewById(R.id.textView3);
-
-        view.setText(trailList.toString());
+        for (int i = 0; i<trailList.size();i++){
+            trailnames+=", " + (trailList.get(i)).getTrail_name();
+        }
+        view.setText(trailnames);
     }
 }

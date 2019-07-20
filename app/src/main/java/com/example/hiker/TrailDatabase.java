@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "trailDatabase.db";
 
     private static TrailDatabase mTraildb;
@@ -82,11 +82,11 @@ public class TrailDatabase extends SQLiteOpenHelper {
         //i was getting an error for recursively creating the database when trying to add elements from this class using the normal add<element> methods.
         //this is because those methods need to instantiate a writable database within their scope, that writable database is already in this scope so calling them from here created that recursion.
         Log.d(TAG, "onCreate: db created");
-        Trail trail = new Trail("Art Loeb", 29, 8257, 011);
+        Trail trail = new Trail("Art Loeb", 29, 8257, 0b011);
         addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Blood Mountain", 6, 1545, 001);
+        trail = new Trail ("Blood Mountain", 6, 1545, 0b001);
         addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Bear Creek", 6, 1108, 011);
+        trail = new Trail ("Bear Creek", 6, 1108, 0b011);
         addTrailOnBuild(trail, sqLiteDatabase);
         Trip trip = new Trip (1);
         trip.setDate("07/11/2011");
@@ -169,20 +169,105 @@ public class TrailDatabase extends SQLiteOpenHelper {
         db.insert(TripsTable.TABLE, null, values);
     }
 
-    public List<String> getTrails(int distanceUpper, int distanceLower){
-        List<String> trailnames = new ArrayList<>();
-
+    public List<Trail> getTrails(int distance, int elevation, int features) {//elements not entered by user recieve a -1 value to search for all cases. features should be a binary integer if not empty
+        //elevation and distance can be -1, 0, 1, or 2. -1 being unset, the others corresponding to the selected radio button
+        List<Trail> trails = new ArrayList<>();
+        String sql;
         SQLiteDatabase readDb = this.getReadableDatabase();
+        if(distance==-1 && elevation==-1 && features==-1){
+            sql = "select * from " + TrailsTable.TABLE;
 
-        String sql = "select " + TrailsTable.COL_TRAIL_NAME + " from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_DISTANCE + " between " + distanceLower + " and " + distanceUpper;
+        }else if (distance==-1 && elevation==-1){
+            sql = "select * from " + TrailsTable.TABLE + " where ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+
+        }else if (distance==-1 && features==0b000){
+            sql = "select * from " + TrailsTable.TABLE + " where " + getTrailElevationCase(elevation);
+        }else if (elevation==-1 && features==0b000) {
+            sql = "select * from " + TrailsTable.TABLE + " where " + getTrailDistanceCase(distance);
+
+        }else if (elevation==-1){
+            sql = "select * from " + TrailsTable.TABLE + " where (" + getTrailDistanceCase(distance) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+
+        }else if (distance==-1){
+            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+
+        }else if (features==-1){
+            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getTrailDistanceCase(distance) + ")" ;
+        }else {
+            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getTrailDistanceCase(distance) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+        }
         Cursor cursor = readDb.rawQuery(sql, new String[]{});
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                trailnames.add(cursor.getString(0));
-            }while (cursor.moveToNext());
-
+                trails.add(new Trail(cursor.getLong(0),cursor.getString(1), cursor.getInt(2), cursor.getInt(3),cursor.getInt(4)));
+            } while (cursor.moveToNext());
         }
         cursor.close();
-        return trailnames;
+        return trails;
+
+
     }
+    private String getTrailElevationCase(int n){
+        String query = "";
+        switch (n) {
+            case (0):
+                query = TrailsTable.COL_ELEVATION + " between 0 and 700";
+                break;
+            case (1):
+                query = TrailsTable.COL_ELEVATION + " between 700 and 1500";
+                break;
+            case (2):
+                query = TrailsTable.COL_ELEVATION + "> 1500";
+                break;
+        }
+        return query;
+    }
+    private String getTrailDistanceCase(int n){
+        String query = "";
+        switch (n) {
+            case (0):
+                query = TrailsTable.COL_TRAIL_DISTANCE + " between 0 and 5";
+                break;
+            case (1):
+                query = TrailsTable.COL_TRAIL_DISTANCE + " between 5 and 15";
+                break;
+            case (2):
+                query = TrailsTable.COL_TRAIL_DISTANCE + " > 15";
+                break;
+        }
+        return query;
+    }
+
+    public List<Trip> getTrips(long id){//takes the trail id of the selected trail
+        List<Trip> trips = new ArrayList<>();
+        String sql;
+        SQLiteDatabase readDb = this.getReadableDatabase();
+        sql = "select * from " + TripsTable.TABLE + " where " + TripsTable.COL_TR_ID + " = " + id;
+        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                trips.add(new Trip(cursor.getLong(0),cursor.getString(1), cursor.getString(2)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trips;
+
+    }
+//getTrails method for if we use ranges of distances instead of checkboxes
+//    public List<String> getTrails(int distanceUpper, int distanceLower){
+//        List<String> trailnames = new ArrayList<>();
+//
+//        SQLiteDatabase readDb = this.getReadableDatabase();
+//
+//        String sql = "select " + TrailsTable.COL_TRAIL_NAME + " from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_DISTANCE + " between " + distanceLower + " and " + distanceUpper;
+//        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+//        if (cursor.moveToFirst()){
+//            do {
+//                trailnames.add(cursor.getString(0));
+//            }while (cursor.moveToNext());
+//
+//        }
+//        cursor.close();
+//        return trailnames;
+//    }
 }

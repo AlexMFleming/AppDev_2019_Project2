@@ -3,6 +3,7 @@ package com.example.hiker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +35,9 @@ public class Search_Activity extends AppCompatActivity {
 
     Button submit;
 
+    int distanceselect;
+    int elevationselect;
+    int featureselect=0b000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +66,49 @@ public class Search_Activity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int rbuttonId1 = hikeLengthGroup.getCheckedRadioButtonId();
-                int rbuttonId2 = elevationGroup.getCheckedRadioButtonId();
-                int rbuttonId3 = featuresGroup.getCheckedRadioButtonId();
+                if (fivem.isChecked()){
+                    distanceselect=0;
+                }else if (fivetenm.isChecked()){
+                    distanceselect=1;
+                }else if (fifteenm.isChecked()){
+                    distanceselect=2;
+                }else{
+                    distanceselect=-1;
+                }
+                if (sevhft.isChecked()){
+                    elevationselect=0;
+                }else if(sevfifthfeet.isChecked()){
+                    elevationselect=1;
+                }else if (fifteenhft.isChecked()){
+                    elevationselect=2;
+                }else{
+                    distanceselect=-1;
+                }
+
+                if (waterfalls.isChecked()){
+                    featureselect+=0b001;
+                }
+                if (creeks.isChecked()) {
+                    featureselect+=0b010;
+                }
+                if (wildlife.isChecked()){
+                    featureselect+=0b100;
+                }
+                toTrailList();
+//                int rbuttonId1 = hikeLengthGroup.getCheckedRadioButtonId();
+//                Log.d("rbuttonId1 ", ""+rbuttonId1);
+//                int rbuttonId2 = elevationGroup.getCheckedRadioButtonId();
+//                int rbuttonId3 = featuresGroup.getCheckedRadioButtonId();
 
 //                This would get the value selected and save it as a variable, which you can use in the next activity.
-                returnButton1 = findViewById(rbuttonId1);
-                String rb1val = returnButton1.getText().toString();
-                returnButton2 = findViewById(rbuttonId2);
-                String rb1va2 = returnButton2.getText().toString();
-                returnButton3 = findViewById(rbuttonId3);
-                String rb1va3 = returnButton3.getText().toString();
-                toTrailList();
+//                returnButton1 = findViewById(rbuttonId1);
+//                String rb1val = returnButton1.getText().toString();
+//                Log.d("rb1val ", rb1val);
+//                returnButton2 = findViewById(rbuttonId2);
+//                String rb1va2 = returnButton2.getText().toString();
+//                returnButton3 = findViewById(rbuttonId3);
+//                String rb1va3 = returnButton3.getText().toString();
+//                toTrailList();
             }
         });
 
@@ -84,6 +119,9 @@ public class Search_Activity extends AppCompatActivity {
 
         public void toTrailList(){
             Intent intent = new Intent(this,Trail_List_Activity.class);
+            intent.putExtra("DISTANCE", distanceselect);
+            intent.putExtra("ELEVATION", elevationselect);
+            intent.putExtra("FEATURE", featureselect);
             startActivity(intent);
         }
 
