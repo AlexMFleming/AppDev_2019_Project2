@@ -3,26 +3,21 @@ package com.example.hiker;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
 public class DetailsFragment extends Fragment {
 
     private Trail mTrail;
+    private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView;
 
-    public static DetailsFragment newInstance(int trailId) {
+    public static DetailsFragment newInstance(long trailId) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
-        args.putInt("trailId", trailId);
+        args.putLong("trailId", trailId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,7 +32,8 @@ public class DetailsFragment extends Fragment {
             trailId = getArguments().getLong("trailId");
         }
 
-       // mTrail = TrailDatabase.getInstance(getContext()).getTrails();
+        mTrail = TrailDatabase.getInstance(getContext()).getTrailById(trailId);
+        Log.i("Final trail name: ", mTrail.getTrail_name());
     }
 
     @Override
@@ -46,21 +42,28 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
-        TextView nameTextView = (TextView) view.findViewById(R.id.trailName);
-        nameTextView.setText(mTrail.getTrail_name());
+        nameTextView = view.findViewById(R.id.trailName);
+        descriptionTextView = view.findViewById(R.id.trailDescription);
+        lengthTextView = view.findViewById(R.id.trailLength);
+        elevationTextView = view.findViewById(R.id.trailElevate);
 
-        TextView descriptionTextView = (TextView) view.findViewById(R.id.trailDescription);
+        nameTextView.setText(mTrail.getTrail_name());
+        descriptionTextView.setText(mTrail.getDescription());
+        lengthTextView.setText(String.valueOf(mTrail.getTrail_distance()));
+        elevationTextView.setText(String.valueOf(mTrail.getElevation()));
+
+        featuresTextView = view.findViewById(R.id.trailFeatures);
             String features = "";
             if (mTrail.hasWildlife()==1){
-                features+= "wildlife ";
+                features += "Wildlife\n";
             }
             if(mTrail.hasWaterfalls()==1){
-                features+="waterfalls ";
+                features += "Waterfalls\n";
             }
             if (mTrail.hasCreeks()==1){
-                features+="creeks";
+                features += "Creeks\n";
             }
-        descriptionTextView.setText(features);
+        featuresTextView.setText(features);
 
         return view;
     }
@@ -77,11 +80,8 @@ public class DetailsFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 public class DetailsActivity extends AppCompatActivity {
-    //SY
     public static String EXTRA_TRAIL_ID = "trailId";
 
     @Override
@@ -19,7 +18,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (fragment == null) {
             fragment = new com.example.hiker.DetailsFragment();
-            int trailId = getIntent().getIntExtra(EXTRA_TRAIL_ID, 1);
+            long trailId = getIntent().getLongExtra(EXTRA_TRAIL_ID, 1);
             fragment = com.example.hiker.DetailsFragment.newInstance(trailId);
             fragmentManager.beginTransaction()
                     .add(R.id.details_fragment_container, fragment)

@@ -47,6 +47,7 @@ public class TrailListFragment extends Fragment {
 
     private class TrailHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Trail mTrail;
+        private long id;
         private TextView mTrailName, mTrailLength, mTrailElevation, mTrailDescription;
 
         public TrailHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -64,12 +65,14 @@ public class TrailListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            mListener.onTrailSelected(mTrail.getTrail_id());
+            mListener.onTrailSelected(id);
+            Log.i("The id is... : ", String.valueOf(id));
         }
     }
 
     private class TrailAdapter extends RecyclerView.Adapter<TrailHolder> {
         private List<Trail> mTrails;
+
         public TrailAdapter(List<Trail> trails) {
             mTrails = trails;
         }
@@ -85,6 +88,8 @@ public class TrailListFragment extends Fragment {
         @Override
         public void onBindViewHolder(TrailHolder holder, int position) {
             final Trail trail = mTrails.get(position);
+
+            holder.id = trail.getTrail_id();
             holder.mTrailName.setText(trail.getTrail_name());
             //Need to wrap ints to String
             holder.mTrailLength.setText(String.valueOf(trail.getTrail_distance()));
