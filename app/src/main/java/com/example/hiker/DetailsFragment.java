@@ -31,13 +31,13 @@ public class DetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the band ID from the intent that started DetailsActivity
-        int bandId = 1;
+        // Get the ID from the intent that started DetailsActivity
+        long trailId = 1;
         if (getArguments() != null) {
-            bandId = getArguments().getInt("bandId");
+            trailId = getArguments().getLong("trailId");
         }
-//
-//        mTrail = TrailDatabase.getInstance(getContext()).getTrails();
+
+       // mTrail = TrailDatabase.getInstance(getContext()).getTrails();
     }
 
     @Override
