@@ -82,18 +82,20 @@ public class New_Trail_Activity extends AppCompatActivity {
         CheckBox checkBox = findViewById(R.id.checkBox);
         CheckBox checkBox1 = findViewById(R.id.checkBox2);
         CheckBox checkBox2 = findViewById(R.id.checkBox3);
-        int features = 0b000;
+        int waterfalls = 0;
+        int creek = 0;
+        int wildlife = 0;
         if (checkBox.isChecked()){
-            features += 0b001;
+            waterfalls =1;
         }
         if (checkBox1.isChecked()){
-            features += 0b010;
+            creek=1;
         }
         if (checkBox2.isChecked()){
-            features += 0b100;
+            wildlife = 1;
         }
 
-        Trail trail = new Trail(trailName, distance, elevation, features);
+        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife);
         TrailDb.addTrail(trail);
         Toast.makeText(this, " " + trail.getTrail_name() +" added", Toast.LENGTH_LONG).show();
     }

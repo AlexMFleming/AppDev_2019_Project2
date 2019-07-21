@@ -37,8 +37,9 @@ public class Search_Activity extends AppCompatActivity {
 
     int distanceselect;
     int elevationselect;
-    int featureselect=0b000;
-
+    int waterfallfeature;
+    int creekfeature;
+    int wildlifefeature;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +58,8 @@ public class Search_Activity extends AppCompatActivity {
         fifteenhft =  findViewById(R.id.radioButton6);
 
         waterfalls =  findViewById(R.id.radioButton7);
-        creeks = findViewById(R.id.radioButton8);
-        wildlife =  findViewById(R.id.radioButton9);
+        wildlife = findViewById(R.id.radioButton8);
+        creeks =  findViewById(R.id.radioButton9);
 
         submit =  findViewById(R.id.button4);
 
@@ -82,17 +83,19 @@ public class Search_Activity extends AppCompatActivity {
                 }else if (fifteenhft.isChecked()){
                     elevationselect=2;
                 }else{
-                    distanceselect=-1;
+                    elevationselect=-1;
                 }
-
+                waterfallfeature=0;//resets the features to zero for a new search
+                creekfeature = 0;
+                wildlifefeature = 0;
                 if (waterfalls.isChecked()){
-                    featureselect+=0b001;
+                    waterfallfeature=1;
                 }
                 if (creeks.isChecked()) {
-                    featureselect+=0b010;
+                    creekfeature=1;
                 }
                 if (wildlife.isChecked()){
-                    featureselect+=0b100;
+                    wildlifefeature=1;
                 }
                 toTrailList();
 //                int rbuttonId1 = hikeLengthGroup.getCheckedRadioButtonId();
@@ -121,10 +124,11 @@ public class Search_Activity extends AppCompatActivity {
             Intent intent = new Intent(this,Trail_List_Activity.class);
             intent.putExtra("DISTANCE", distanceselect);
             intent.putExtra("ELEVATION", elevationselect);
-            intent.putExtra("FEATURE", featureselect);
+            intent.putExtra("WATERFALL", waterfallfeature);
+            intent.putExtra("CREEK", creekfeature);
+            intent.putExtra("WILDLIFE", wildlifefeature);
             startActivity(intent);
         }
-
 
 //    public void searchTrails(View view){
 //        EditText text = (EditText)findViewById(R.id.distanceLowerBoundView);

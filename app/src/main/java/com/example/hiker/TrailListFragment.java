@@ -37,10 +37,8 @@ public class TrailListFragment extends Fragment {
         TrailDb = TrailDatabase.getInstance(getActivity());
         Intent intent = getActivity().getIntent();
 
-        distanceLowerBound = intent.getIntExtra("DISTANCE_LOWER_BOUND", -1);
-        distanceUpperBound = intent.getIntExtra("DISTANCE_UPPER_BOUND", -1);
 
-        trailList = TrailDb.getTrails(intent.getIntExtra("DISTANCE", -1), intent.getIntExtra("ELEVATION", -1), intent.getIntExtra("FEATURE", 0b000));
+        trailList=TrailDb.getTrails(intent.getIntExtra("DISTANCE", -1), intent.getIntExtra("ELEVATION", -1), intent.getIntExtra("WATERFALL", 0), intent.getIntExtra("CREEK", 0), intent.getIntExtra("WILDLIFE", 0));
         TrailAdapter adapter = new TrailAdapter(trailList);
         recyclerView.setAdapter(adapter);
 

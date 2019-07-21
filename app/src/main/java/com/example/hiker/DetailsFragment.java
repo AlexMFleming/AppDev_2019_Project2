@@ -50,7 +50,17 @@ public class DetailsFragment extends Fragment {
         nameTextView.setText(mTrail.getTrail_name());
 
         TextView descriptionTextView = (TextView) view.findViewById(R.id.trailDescription);
-        descriptionTextView.setText(mTrail.getFeatures());
+            String features = "";
+            if (mTrail.hasWildlife()==1){
+                features+= "wildlife ";
+            }
+            if(mTrail.hasWaterfalls()==1){
+                features+="waterfalls ";
+            }
+            if (mTrail.hasCreeks()==1){
+                features+="creeks";
+            }
+        descriptionTextView.setText(features);
 
         return view;
     }
