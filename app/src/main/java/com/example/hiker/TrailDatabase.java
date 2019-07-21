@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "trailDatabase.db";
 
     private static TrailDatabase mTraildb;
@@ -179,6 +179,23 @@ public class TrailDatabase extends SQLiteOpenHelper {
         values.put(TripsTable.COL_DATE, trip.getDate());
         values.put(TripsTable.COL_DESCRIPTION, trip.getDescription());
         db.insert(TripsTable.TABLE, null, values);
+    }
+
+    public Trail getTrailById(long id){
+        String sql;
+        Trail trail=null;
+        SQLiteDatabase readDb = getReadableDatabase();
+        sql = "select * from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_ID + " = " + id;
+        Log.d(TAG, "getTrailById query: " + sql);
+        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                trail = new Trail(cursor.getLong(0),cursor.getString(1), cursor.getInt(2), cursor.getInt(3),cursor.getInt(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7));
+                Log.d(TAG, "cursorCount: " + cursor.getCount());
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trail;
     }
 
     public List<Trail> getTrails(int distance, int elevation, int waterfalls, int creeks, int wildlife) {//elements not entered by user recieve a -1 value to search for all cases. features should be a binary integer if not empty
