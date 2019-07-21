@@ -33,12 +33,9 @@ public class Trail {
         this.creeks = creeks;
         this.wildlife = wildlife;
         this.description = description;
-
     }
 
     public Trail(String trail, int length, int elev, int waterfalls, int creeks, int wildlife){
-
-
         trail_name =trail;
         trail_distance =length;
         elevation =elev;
@@ -46,6 +43,7 @@ public class Trail {
         this.creeks=creeks;
         this.wildlife=wildlife;
     }
+
     public long getTrail_id(){
         return trail_id;
     }

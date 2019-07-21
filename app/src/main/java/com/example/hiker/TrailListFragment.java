@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,74 +22,91 @@ public class TrailListFragment extends Fragment {
     // Reference to the activity
     private OnTrailSelectedListener mListener;
     private TrailDatabase TrailDb;
-    int distanceUpperBound;
-    int distanceLowerBound;
     List<Trail> trailList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_trail_list, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.trail_recycler_view);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // SY - may cause problems
-        TrailDb = TrailDatabase.getInstance(getActivity());
+        TrailDb = TrailDatabase.getInstance(this.getContext());
         Intent intent = getActivity().getIntent();
+        trailList = TrailDb.getTrails(intent.getIntExtra("DISTANCE", -1), intent.getIntExtra("ELEVATION", -1), intent.getIntExtra("WATERFALL", 0), intent.getIntExtra("CREEK", 0), intent.getIntExtra("WILDLIFE", 0));
 
+        //SY - test contents from intent
+        for (Trail trails : trailList) {
+            Log.d("TrailList contents: ", String.valueOf(trails.getTrail_distance()));
+        }
 
-        trailList=TrailDb.getTrails(intent.getIntExtra("DISTANCE", -1), intent.getIntExtra("ELEVATION", -1), intent.getIntExtra("WATERFALL", 0), intent.getIntExtra("CREEK", 0), intent.getIntExtra("WILDLIFE", 0));
         TrailAdapter adapter = new TrailAdapter(trailList);
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
-    private class TrailHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Trail mTrail;
-        private TextView mTrailName, mTrailHeight, mTrailElevation, mTrailDescription;
-
-        public TrailHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_trail, parent, false));
-            itemView.setOnClickListener(this);
-            mTrailName = itemView.findViewById(R.id.trailName);
-        }
-
-        public void bind(Trail trail) {
-            mTrail = trail;
-            mTrailName.setText(mTrail.getTrail_name());
-        }
-
-        @Override
-        public void onClick(View view) {
-            mListener.onTrailSelected(mTrail.getTrail_id());
-        }
-    }
-
-    private class TrailAdapter extends RecyclerView.Adapter<TrailHolder> {
-        private List<Trail> mTrails;
-        public TrailAdapter(List<Trail> trails) {
-            mTrails = trails;
-        }
-
-        @Override
-        public TrailHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new TrailHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(TrailHolder holder, int position) {
-            Trail trail = mTrails.get(position);
-            holder.bind(trail);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mTrails.size();
-        }
-    }
+//    private class TrailHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//        private Trail mTrail;
+//        private TextView mTrailName, mTrailLength, mTrailElevation, mTrailDescription;
+//
+//        public TrailHolder(LayoutInflater inflater, ViewGroup parent) {
+//            super(inflater.inflate(R.layout.list_item_trail, parent, false));
+//            itemView.setOnClickListener(this);
+//            mTrailName = itemView.findViewById(R.id.trailName);
+//            mTrailLength = itemView.findViewById(R.id.trailLength);
+//            mTrailElevation = itemView.findViewById(R.id.trailElev);
+//            mTrailDescription = itemView.findViewById(R.id.trailDescription);
+//        }
+//
+//        public void bind(Trail trail) {
+//            mTrail = trail;
+////            mTrailName.setText(mTrail.getTrail_name());
+////            mTrailLength.setText(mTrail.getTrail_distance());
+////            mTrailElevation.setText(mTrail.getElevation());
+////            mTrailDescription.setText(mTrail.getDescription());
+//        }
+//
+//        @Override
+//        public void onClick(View view) {
+//            mListener.onTrailSelected(mTrail.getTrail_id());
+//        }
+//    }
+//
+//    private class TrailAdapter extends RecyclerView.Adapter<TrailHolder> {
+//        private List<Trail> mTrails;
+//        private TextView mTrailName, mTrailLength, mTrailElevation, mTrailDescription;
+//        public TrailAdapter(List<Trail> trails) {
+//            mTrails = trails;
+//        }
+//
+//        // Create new views (invoked by the layout manager)
+//        @Override
+//        public TrailHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+//            return new TrailHolder(layoutInflater, parent);
+//        }
+//
+//        // Replace the contents of a view (invoked by the layout manager)
+//        @Override
+//        public void onBindViewHolder(TrailHolder holder, int position) {
+//            Trail trail = mTrails.get(position);
+//            mTrailName.setText(trail.getTrail_name());
+//            mTrailLength.setText(trail.getTrail_distance());
+//            mTrailElevation.setText(trail.getElevation());
+//            mTrailDescription.setText(trail.getDescription());
+//            holder.bind(trail);
+//        }
+//
+//        // Return the size of your dataset (invoked by the layout manager)
+//        @Override
+//        public int getItemCount() {
+//            return mTrails.size();
+//        }
+//    }
 
     @Override
     public void onAttach(Context context) {
