@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "trailDatabase.db";
 
     private static TrailDatabase mTraildb;
@@ -37,9 +37,12 @@ public class TrailDatabase extends SQLiteOpenHelper {
         private static final String TABLE = "trails";
         private static final String COL_TRAIL_ID = "trail_id";
         private static final String COL_TRAIL_NAME = "trail_name";
-        private static final String COL_FEATURES = "features";
+        private static final String COL_WATERFALLS = "waterfalls";
+        private static final String COL_CREEKS = "creeks";
+        private static final String COL_WILDLIFE = "wildlife";
         private static final String COL_ELEVATION = "elevation";
         private static final String COL_TRAIL_DISTANCE = "trail_distance";
+        private static final String COL_DESCRIPTION = "description";
     }
 
     private static final class TripsTable {
@@ -60,9 +63,12 @@ public class TrailDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("create table " + TrailsTable.TABLE + " (" +
                 TrailsTable.COL_TRAIL_ID + " integer primary key autoincrement, " +
                 TrailsTable.COL_TRAIL_NAME + ", " +
-                TrailsTable.COL_FEATURES + " integer, " +
+                TrailsTable.COL_TRAIL_DISTANCE + " integer," +
                 TrailsTable.COL_ELEVATION + " integer, " +
-                TrailsTable.COL_TRAIL_DISTANCE + " integer)");
+                TrailsTable.COL_WATERFALLS + " integer, " +
+                TrailsTable.COL_CREEKS + " integer, " +
+                TrailsTable.COL_WILDLIFE + " integer, " +
+                TrailsTable.COL_DESCRIPTION + " text)");
 
         sqLiteDatabase.execSQL("create table " + TripsTable.TABLE + " (" +
                 TripsTable.COL_TR_ID + " integer, " +
@@ -82,11 +88,11 @@ public class TrailDatabase extends SQLiteOpenHelper {
         //i was getting an error for recursively creating the database when trying to add elements from this class using the normal add<element> methods.
         //this is because those methods need to instantiate a writable database within their scope, that writable database is already in this scope so calling them from here created that recursion.
         Log.d(TAG, "onCreate: db created");
-        Trail trail = new Trail("Art Loeb", 29, 8257, 0b011);
+        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
         addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Blood Mountain", 6, 1545, 0b001);
+        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
         addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Bear Creek", 6, 1108, 0b011);
+        trail = new Trail ("Bear Creek", 6, 1108, 0, 1, 1, "a beautiful, mossy, fern-filled creek valley to the Gennett Poplar, the second largest living tree in Georgia.");
         addTrailOnBuild(trail, sqLiteDatabase);
         Trip trip = new Trip (1);
         trip.setDate("07/11/2011");
@@ -126,7 +132,10 @@ public class TrailDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TrailsTable.COL_TRAIL_NAME, trail.getTrail_name());
         values.put(TrailsTable.COL_ELEVATION, trail.getElevation());
-        values.put(TrailsTable.COL_FEATURES, trail.getFeatures());
+        values.put(TrailsTable.COL_WATERFALLS, trail.hasWaterfalls());
+        values.put(TrailsTable.COL_CREEKS, trail.hasCreeks());
+        values.put(TrailsTable.COL_WILDLIFE, trail.hasWildlife());
+        values.put(TrailsTable.COL_DESCRIPTION, trail.getDescription());
         values.put(TrailsTable.COL_TRAIL_DISTANCE, trail.getTrail_distance());
         long trailId = db.insert(TrailsTable.TABLE, null, values);
         if (trailId == -1) {
@@ -142,7 +151,10 @@ public class TrailDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TrailsTable.COL_TRAIL_NAME, trail.getTrail_name());
         values.put(TrailsTable.COL_ELEVATION, trail.getElevation());
-        values.put(TrailsTable.COL_FEATURES, trail.getFeatures());
+        values.put(TrailsTable.COL_WATERFALLS, trail.hasWaterfalls());
+        values.put(TrailsTable.COL_CREEKS, trail.hasCreeks());
+        values.put(TrailsTable.COL_WILDLIFE, trail.hasWildlife());
+        values.put(TrailsTable.COL_DESCRIPTION, trail.getDescription());
         values.put(TrailsTable.COL_TRAIL_DISTANCE, trail.getTrail_distance());
         long trailId = db.insert(TrailsTable.TABLE, null, values);
         if (trailId == -1) {
@@ -169,37 +181,39 @@ public class TrailDatabase extends SQLiteOpenHelper {
         db.insert(TripsTable.TABLE, null, values);
     }
 
-    public List<Trail> getTrails(int distance, int elevation, int features) {//elements not entered by user recieve a -1 value to search for all cases. features should be a binary integer if not empty
+    public List<Trail> getTrails(int distance, int elevation, int waterfalls, int creeks, int wildlife) {//elements not entered by user recieve a -1 value to search for all cases. features should be a binary integer if not empty
         //elevation and distance can be -1, 0, 1, or 2. -1 being unset, the others corresponding to the selected radio button
         List<Trail> trails = new ArrayList<>();
         String sql;
-        SQLiteDatabase readDb = this.getReadableDatabase();
-        if(distance==-1 && elevation==-1 && features==-1){
-            sql = "select * from " + TrailsTable.TABLE;
+        SQLiteDatabase readDb = getReadableDatabase();
+        if(distance==-1 && elevation==-1 && !(wildlife==1||creeks==1||waterfalls==1)){
+            sql = "select * from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_ID + ">-1";
 
         }else if (distance==-1 && elevation==-1){
-            sql = "select * from " + TrailsTable.TABLE + " where ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+            sql = "select * from " + TrailsTable.TABLE + " where " + getFeatureCase(waterfalls, creeks, wildlife);
 
-        }else if (distance==-1 && features==0b000){
+        }else if (distance==-1 && !(wildlife==1||creeks==1||waterfalls==1)){
             sql = "select * from " + TrailsTable.TABLE + " where " + getTrailElevationCase(elevation);
-        }else if (elevation==-1 && features==0b000) {
+        }else if (elevation==-1 && !(wildlife==1||creeks==1||waterfalls==1)) {
             sql = "select * from " + TrailsTable.TABLE + " where " + getTrailDistanceCase(distance);
 
         }else if (elevation==-1){
-            sql = "select * from " + TrailsTable.TABLE + " where (" + getTrailDistanceCase(distance) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+            sql = "select * from " + TrailsTable.TABLE + " where (" + getTrailDistanceCase(distance) + ") AND (" + getFeatureCase(waterfalls, creeks, wildlife) + ")";
 
         }else if (distance==-1){
-            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getFeatureCase(waterfalls, creeks, wildlife) + ")";
 
-        }else if (features==-1){
+        }else if (!(wildlife==1||creeks==1||waterfalls==1)){
             sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getTrailDistanceCase(distance) + ")" ;
         }else {
-            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getTrailDistanceCase(distance) + ") AND ((" + TrailsTable.COL_FEATURES + " & " + features + ") >= " + features + ") AND ((" + TrailsTable.COL_FEATURES + " | " + features + ") >= " + features + ")";
+            sql = "select * from " + TrailsTable.TABLE + " where (" +getTrailElevationCase(elevation) + ") AND (" + getTrailDistanceCase(distance) + ") AND (" + getFeatureCase(waterfalls, creeks, wildlife) + ")";
         }
+        Log.d(TAG, "getTrails query: " + sql);
         Cursor cursor = readDb.rawQuery(sql, new String[]{});
         if (cursor.moveToFirst()) {
             do {
-                trails.add(new Trail(cursor.getLong(0),cursor.getString(1), cursor.getInt(2), cursor.getInt(3),cursor.getInt(4)));
+                trails.add(new Trail(cursor.getLong(0),cursor.getString(1), cursor.getInt(2), cursor.getInt(3),cursor.getInt(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7)));
+                Log.d(TAG, "cursorCount: " + cursor.getCount());
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -234,6 +248,25 @@ public class TrailDatabase extends SQLiteOpenHelper {
             case (2):
                 query = TrailsTable.COL_TRAIL_DISTANCE + " > 15";
                 break;
+        }
+        return query;
+    }
+    private String getFeatureCase(int waterfalls, int creeks, int wildlife){
+        String query="";
+        if(waterfalls==1 && creeks==1 && wildlife==1){
+            query = TrailsTable.COL_CREEKS + " = 1 AND " + TrailsTable.COL_WATERFALLS + " = 1 AND " + TrailsTable.COL_WILDLIFE + " = 1";
+        }else if (waterfalls==1 && creeks==1){
+            query = TrailsTable.COL_CREEKS + " = 1 AND " + TrailsTable.COL_WATERFALLS + " = 1";
+        }else if (waterfalls==1 && wildlife==1){
+            query = TrailsTable.COL_WATERFALLS + " = 1 AND " + TrailsTable.COL_WILDLIFE + " = 1";
+        }else if (creeks==1 && wildlife==1){
+            query = TrailsTable.COL_CREEKS + " = 1 AND " + TrailsTable.COL_WILDLIFE + " = 1";
+        }else if (waterfalls==1){
+            query = TrailsTable.COL_WATERFALLS + " = 1";
+        }else if (creeks==1) {
+            query = TrailsTable.COL_CREEKS + " = 1";
+        }else if (wildlife==1){
+            query = TrailsTable.COL_WILDLIFE + " = 1";
         }
         return query;
     }
