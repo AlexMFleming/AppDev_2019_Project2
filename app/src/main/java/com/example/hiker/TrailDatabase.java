@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "trailDatabase.db";
 
     private static TrailDatabase mTraildb;

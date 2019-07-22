@@ -75,6 +75,9 @@ public class New_Trail_Activity extends AppCompatActivity {
         text = (EditText)findViewById(R.id.newTrail_length_entry);
         int distance = Integer.parseInt(text.getText().toString());
 
+        EditText traildesc = findViewById(R.id.newTrail_description);
+        String trailDesc = traildesc.getText().toString();
+
 
         //store the 3 feature elements in one 3 digit binary number. I thought this would be an efficient way to store it but it might end up being
         //more of a hassle than its worth.
@@ -95,7 +98,7 @@ public class New_Trail_Activity extends AppCompatActivity {
             wildlife = 1;
         }
 
-        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife);
+        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc);
         TrailDb.addTrail(trail);
         Toast.makeText(this, " " + trail.getTrail_name() +" added", Toast.LENGTH_LONG).show();
     }

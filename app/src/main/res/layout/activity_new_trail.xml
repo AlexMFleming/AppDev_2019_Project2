@@ -139,15 +139,13 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="165dp"
-        android:layout_marginLeft="165dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="165dp"
-        android:layout_marginRight="165dp"
         android:text="Does it have:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/newTrail_description" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -185,12 +183,27 @@
         android:id="@+id/newTrail_submit_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="28dp"
         android:onClick="createTrailClick"
         android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+
+    <EditText
+        android:id="@+id/newTrail_description"
+        android:layout_width="315dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/trailDesc_Hint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </android.support.constraint.ConstraintLayout>
