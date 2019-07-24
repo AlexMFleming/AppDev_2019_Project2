@@ -296,6 +296,23 @@ public class TrailDatabase extends SQLiteOpenHelper {
         return query;
     }
 
+    public void deleteTrail(long id) {
+        String sql;
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TrailsTable.TABLE, TrailsTable.COL_TRAIL_ID + "=?", new String[]{id+""});
+        sql = "select * from " + ImagesTable.TABLE + " where " + ImagesTable.COL_TR_ID + " = " + id;
+        Cursor cursor = db.rawQuery(sql, new String[]{});
+        
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d(TAG, "deleteTrail: " + cursor.getLong(0));
+            } while (cursor.moveToNext());
+        }else {
+            Log.d(TAG, "deleteTrail: sucess");
+        }
+        cursor.close();
+    }
+
     public List<Trip> getTrips(long id){//takes the trail id of the selected trail
         List<Trip> trips = new ArrayList<>();
         String sql;
