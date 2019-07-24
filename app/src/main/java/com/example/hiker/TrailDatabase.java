@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "trailDatabase.db";
 
     private static TrailDatabase mTraildb;
@@ -180,6 +180,14 @@ public class TrailDatabase extends SQLiteOpenHelper {
         values.put(TripsTable.COL_DESCRIPTION, trip.getDescription());
         db.insert(TripsTable.TABLE, null, values);
     }
+    public void addImage (Image image) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ImagesTable.COL_TR_ID, image.getTr_id());
+        values.put(ImagesTable.COL_FILENAME, image.getFilename());
+        long x = db.insert(ImagesTable.TABLE, null, values);
+        Log.d(TAG, "addImage: " + x);
+    }
 
     public Trail getTrailById(long id){
         String sql;
@@ -302,6 +310,22 @@ public class TrailDatabase extends SQLiteOpenHelper {
         cursor.close();
         return trips;
 
+    }
+
+    public List<Image> getImageById(long id){
+        List<Image> images = new ArrayList<>();
+        String sql;
+        SQLiteDatabase db = this.getReadableDatabase();
+        sql = "select * from " + ImagesTable.TABLE + " where " + ImagesTable.COL_TR_ID + " = " + id;
+        Cursor cursor = db.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                images.add(new Image(cursor.getLong(0),cursor.getString(1)));
+                Log.d(TAG, "cursorCount: " + cursor.getCount());
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return images;
     }
 //getTrails method for if we use ranges of distances instead of checkboxes
 //    public List<String> getTrails(int distanceUpper, int distanceLower){

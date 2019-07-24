@@ -1,19 +1,34 @@
 package com.example.hiker;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailsFragment extends Fragment {
 
     private Trail mTrail;
     private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView;
-
+    private ImageView imageView;
+    private final int REQUEST_WRITE_CODE = 0;
     public static DetailsFragment newInstance(long trailId) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
@@ -46,11 +61,25 @@ public class DetailsFragment extends Fragment {
         descriptionTextView = view.findViewById(R.id.trailDescription);
         lengthTextView = view.findViewById(R.id.trailLength);
         elevationTextView = view.findViewById(R.id.trailElevate);
+        imageView = view.findViewById(R.id.imageView);
 
         nameTextView.setText(mTrail.getTrail_name());
         descriptionTextView.setText(mTrail.getDescription());
         lengthTextView.setText(String.valueOf(mTrail.getTrail_distance()));
         elevationTextView.setText(String.valueOf(mTrail.getElevation()));
+
+        List<Image> images = new ArrayList<Image>();
+        images = TrailDatabase.getInstance(getContext()).getImageById(mTrail.getTrail_id());
+        Log.d("images array", "onCreateView: " + images.toString());
+        if (images.size()>0){
+            try {
+                imageView.setImageBitmap(BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/" + images.get(0).getFilename()));
+
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+
+        }
 
         featuresTextView = view.findViewById(R.id.trailFeatures);
             String features = "";
@@ -86,4 +115,5 @@ public class DetailsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
