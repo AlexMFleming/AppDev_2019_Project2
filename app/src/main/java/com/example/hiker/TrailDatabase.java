@@ -14,10 +14,10 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "trailDatabase.db";
     private static final PopulateDB databaseInstantiate = new PopulateDB();
-    private ArrayList<Trail> trailArrayList;
+
 
     private static TrailDatabase mTraildb;
 
@@ -32,7 +32,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
     //constructor
     private TrailDatabase(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        trailArrayList = databaseInstantiate.createTrails();
+
     }
 
     private static final class TrailsTable {
@@ -131,52 +131,26 @@ public class TrailDatabase extends SQLiteOpenHelper {
                 EmergencyContactTable.COL_NAME + " primary key," +
                 EmergencyContactTable.COL_PHONE_NUMBER + ")");
 
-        //BUILD_DATA: build data goes here. create the tables as objects and pass that object and the database instance to the add<element>OnBuild method.
-        //i was getting an error for recursively creating the database when trying to add elements from this class using the normal add<element> methods.
-        //this is because those methods need to instantiate a writable database within their scope, that writable database is already in this scope so calling them from here created that recursion.
+        //BUILD_DATA: since stations reference parks, and trails reference stations, they must build in this order.
         Log.d(TAG, "onCreate: db created");
-//        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-//        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-//        trail = new Trail ("Bear Creek", 6, 1108, 0, 1, 1, "a beautiful, mossy, fern-filled creek valley to the Gennett Poplar, the second largest living tree in Georgia.");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-
+        ArrayList<Park> parkArrayList = databaseInstantiate.createParks();
+        for (int i = 0; i < parkArrayList.size(); i++) {
+            addParkOnBuild(parkArrayList.get(i), sqLiteDatabase);
+        }
+        parkArrayList.clear();
+        ArrayList<Station> stationArrayList = databaseInstantiate.createStations();
+        for (int i = 0; i < stationArrayList.size(); i++) {
+            addStationOnBuild(stationArrayList.get(i), sqLiteDatabase);
+        }
+        parkArrayList.clear();
+        ArrayList<Trail> trailArrayList= databaseInstantiate.createTrails();
         //Adds trails to database from PopulateDB
         for (int i = 0; i < trailArrayList.size(); i++) {
             addTrailOnBuild(trailArrayList.get(i), sqLiteDatabase);
         }
+        trailArrayList.clear();
 
-        Trip trip = new Trip (1);
-        trip.setDate("07/11/2011");
-        trip.setDescription("Went with Corn and Shelby. made a wrong turn which added 10 miles to the journey.");
-        addTripOnBuild(trip, sqLiteDatabase);
-        trip = new Trip(2);
-        trip.setDate("8/12/2018");
-        trip.setDescription("Rained the whole time but was still beautiful");
-        addTripOnBuild(trip, sqLiteDatabase);
-        trip = new Trip(3);
-        trip.setDate("04/10/2014");
-        trip.setDescription("Went with brown and kumu. Almost ate jeffrey the turtle but he ran away");
-        addTripOnBuild(trip, sqLiteDatabase);
-//        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-//        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-//        trail = new Trail ("Bear Creek", 6, 1108, 0, 1, 1, "a beautiful, mossy, fern-filled creek valley to the Gennett Poplar, the second largest living tree in Georgia.");
-//        addTrailOnBuild(trail, sqLiteDatabase);
-//        Trip trip = new Trip (1);
-//        trip.setDeparture("07/11/2011");
-//        trip.setReturndate("Went with Corn and Shelby. made a wrong turn which added 10 miles to the journey.");
-//        addTripOnBuild(trip, sqLiteDatabase);
-//        trip = new Trip(2);
-//        trip.setDeparture("8/12/2018");
-//        trip.setReturndate("Rained the whole time but was still beautiful");
-//        addTripOnBuild(trip, sqLiteDatabase);
-//        trip = new Trip(3);
-//        trip.setDeparture("04/10/2014");
-//        trip.setReturndate("Went with brown and kumu. Almost ate jeffrey the turtle but he ran away");
-//        addTripOnBuild(trip, sqLiteDatabase);
+
     }
 
     @Override
@@ -265,8 +239,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "addImage: " + x);
     }
 
-    public void addPark (Park park) {
-        SQLiteDatabase db = getWritableDatabase();
+    public void addParkOnBuild (Park park, SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         values.put(ParkTable.COL_NAME, park.getName());
         values.put(ParkTable.COL_STATE, park.getState());
@@ -276,8 +249,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "addPark: id = " + park.getPark_id() + " name = " + park.getName());
     }
 
-    public void addStation (Station station) {
-        SQLiteDatabase db = getWritableDatabase();
+    public void addStationOnBuild (Station station, SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         values.put(StationTable.COL_PARK_ID, station.getPark_id());
         values.put(StationTable.COL_NAME, station.getName());
