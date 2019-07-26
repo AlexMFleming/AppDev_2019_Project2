@@ -15,8 +15,10 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "trailDatabase.db";
+    private static final PopulateDB databaseInstantiate = new PopulateDB();
+    private ArrayList<Trail> trailArrayList;
 
     private static TrailDatabase mTraildb;
 
@@ -31,6 +33,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
     //constructor
     private TrailDatabase(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        trailArrayList = databaseInstantiate.createTrails();
     }
 
     private static final class TrailsTable {
@@ -88,12 +91,18 @@ public class TrailDatabase extends SQLiteOpenHelper {
         //i was getting an error for recursively creating the database when trying to add elements from this class using the normal add<element> methods.
         //this is because those methods need to instantiate a writable database within their scope, that writable database is already in this scope so calling them from here created that recursion.
         Log.d(TAG, "onCreate: db created");
-        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
-        addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
-        addTrailOnBuild(trail, sqLiteDatabase);
-        trail = new Trail ("Bear Creek", 6, 1108, 0, 1, 1, "a beautiful, mossy, fern-filled creek valley to the Gennett Poplar, the second largest living tree in Georgia.");
-        addTrailOnBuild(trail, sqLiteDatabase);
+//        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
+//        addTrailOnBuild(trail, sqLiteDatabase);
+//        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
+//        addTrailOnBuild(trail, sqLiteDatabase);
+//        trail = new Trail ("Bear Creek", 6, 1108, 0, 1, 1, "a beautiful, mossy, fern-filled creek valley to the Gennett Poplar, the second largest living tree in Georgia.");
+//        addTrailOnBuild(trail, sqLiteDatabase);
+
+        //Adds trails to database from PopulateDB
+        for (int i = 0; i < trailArrayList.size(); i++) {
+            addTrailOnBuild(trailArrayList.get(i), sqLiteDatabase);
+        }
+
         Trip trip = new Trip (1);
         trip.setDate("07/11/2011");
         trip.setDescription("Went with Corn and Shelby. made a wrong turn which added 10 miles to the journey.");
