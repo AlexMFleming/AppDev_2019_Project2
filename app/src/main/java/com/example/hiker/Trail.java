@@ -9,11 +9,12 @@ public class Trail {
     private int elevation;
     private int trail_distance;
     private String description;
+    private long stationId;
 
     public Trail() {
     }
 
-    public Trail(String trail, int length, int elev, int waterfalls, int creeks, int wildlife, String description) {
+    public Trail(String trail, int length, int elev, int waterfalls, int creeks, int wildlife, String description, long stationId) {
         trail_name = trail;
         trail_distance = length;
         elevation = elev;
@@ -21,10 +22,11 @@ public class Trail {
         this.creeks = creeks;
         this.wildlife = wildlife;
         this.description = description;
+        this.stationId = stationId;
 
     }
 
-    public Trail(long id, String trail, int length, int elev, int waterfalls, int creeks, int wildlife, String description) {
+    public Trail(long id, String trail, int length, int elev, int waterfalls, int creeks, int wildlife, String description, long stationId) {
         trail_id = id;
         trail_name = trail;
         trail_distance = length;
@@ -33,6 +35,7 @@ public class Trail {
         this.creeks = creeks;
         this.wildlife = wildlife;
         this.description = description;
+        this.stationId = stationId;
     }
 
     public Trail(String trail, int length, int elev, int waterfalls, int creeks, int wildlife){
@@ -82,4 +85,5 @@ public class Trail {
     public String getDescription() {
         return description;
     }
+    public long getStationId() {return stationId;}
 }
