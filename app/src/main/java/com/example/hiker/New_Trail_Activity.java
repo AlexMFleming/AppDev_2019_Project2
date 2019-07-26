@@ -156,8 +156,8 @@ public class New_Trail_Activity extends AppCompatActivity {
         if (checkBox2.isChecked()){
             wildlife = 1;
         }
-
-        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc);
+        long stationid = -1; //placeholder until we get station selection working
+        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationid);
         TrailDb.addTrail(trail);
         Log.d("filepath", "createTrailClick: " + filePath);
         if (filePath!=null){
