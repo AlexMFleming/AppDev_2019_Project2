@@ -147,18 +147,19 @@ public class TrailDatabase extends SQLiteOpenHelper {
             addTrailOnBuild(trailArrayList.get(i), sqLiteDatabase);
         }
 
-        Trip trip = new Trip (1);
-        trip.setDate("07/11/2011");
-        trip.setDescription("Went with Corn and Shelby. made a wrong turn which added 10 miles to the journey.");
-        addTripOnBuild(trip, sqLiteDatabase);
-        trip = new Trip(2);
-        trip.setDate("8/12/2018");
-        trip.setDescription("Rained the whole time but was still beautiful");
-        addTripOnBuild(trip, sqLiteDatabase);
-        trip = new Trip(3);
-        trip.setDate("04/10/2014");
-        trip.setDescription("Went with brown and kumu. Almost ate jeffrey the turtle but he ran away");
-        addTripOnBuild(trip, sqLiteDatabase);
+//        Trip trip = new Trip (1);
+//        trip.setDate("07/11/2011");
+//        trip.setDescription("Went with Corn and Shelby. made a wrong turn which added 10 miles to the journey.");
+//        addTripOnBuild(trip, sqLiteDatabase);
+//        trip = new Trip(2);
+//        trip.setDate("8/12/2018");
+//        trip.setDescription("Rained the whole time but was still beautiful");
+//        addTripOnBuild(trip, sqLiteDatabase);
+//        trip = new Trip(3);
+//        trip.setDate("04/10/2014");
+//        trip.setDescription("Went with brown and kumu. Almost ate jeffrey the turtle but he ran away");
+//        addTripOnBuild(trip, sqLiteDatabase);
+
 //        Trail trail = new Trail("Art Loeb", 29, 8257, 0, 1, 1, "Traverses through many different biomes and summits the highest peak of the Appalachian Mountains and the 4th most isolated peak in the country, Mt. Mitchell");
 //        addTrailOnBuild(trail, sqLiteDatabase);
 //        trail = new Trail ("Blood Mountain", 6, 1545, 0, 0, 1, "Steep climb on the north Georgia AT with a great view at the top");
