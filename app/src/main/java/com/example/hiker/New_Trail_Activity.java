@@ -1,10 +1,18 @@
 package com.example.hiker;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -14,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class New_Trail_Activity extends AppCompatActivity {
 
     private FrameLayout setPictureLayout;
@@ -21,7 +31,9 @@ public class New_Trail_Activity extends AppCompatActivity {
     private TextView frameLayoutText;
     private TrailDatabase TrailDb;
     private final int REQUEST_IMAGE_CAPTURE = 1;
-
+    String filePath;
+    private final int REQUEST_WRITE_CODE = 0;
+    Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +53,11 @@ public class New_Trail_Activity extends AppCompatActivity {
     }
 
     public void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        if (hasFilePermissions()) {
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
     }
 
@@ -57,14 +71,59 @@ public class New_Trail_Activity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Bitmap imageBitmap;
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            frameLayoutText.setVisibility(View.INVISIBLE);
-            generatedThumbnail.setImageBitmap(imageBitmap);
+            imageUri = data.getData();
+            
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                frameLayoutText.setVisibility(View.INVISIBLE);
+                generatedThumbnail.setImageBitmap(imageBitmap);
+
+                filePath = imageUri.getPath();
+
+                Cursor cursor = this.getContentResolver().query(imageUri, null, null, null, null);
+                if (cursor.moveToFirst())
+                {
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);//Instead of "MediaStore.Images.Media.DATA" can be used "_data"
+                    imageUri = Uri.parse(cursor.getString(column_index));
+                    Log.d("imageUri", "image URI " +imageUri);
+                    filePath = imageUri.getLastPathSegment().toString();
+                }
+                cursor.close();
+                Log.d("imageUri", "filePath " + filePath);
+            }catch(IOException E){
+                Log.d("IOException", "onActivityResult: " + E);
+            }
+
         }
     }
+    private boolean hasFilePermissions(){
+        String writePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        if(ContextCompat.checkSelfPermission(this, writePermission)!= PackageManager.PERMISSION_GRANTED){
 
+            ActivityCompat.requestPermissions(this, new String[]{ writePermission }, REQUEST_WRITE_CODE);
+
+        }return true;
+    }
+
+    private void showPermissionRationaleDialog() {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int [] grantResults) {
+        switch(requestCode) {
+            case REQUEST_WRITE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// Permission granted!}else{// Permission denied!}return;
+                } else {
+
+                }
+                return;
+            }
+        }
+    }
     public void createTrailClick(View view){
         EditText text = (EditText)findViewById(R.id.newTrail_name_entry);
         String trailName = text.getText().toString();
@@ -97,9 +156,14 @@ public class New_Trail_Activity extends AppCompatActivity {
         if (checkBox2.isChecked()){
             wildlife = 1;
         }
-
-        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc);
+        long stationid = -1; //placeholder until we get station selection working
+        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationid);
         TrailDb.addTrail(trail);
+        Log.d("filepath", "createTrailClick: " + filePath);
+        if (filePath!=null){
+            Image image = new Image(trail.getTrail_id(),filePath);
+            TrailDb.addImage(image);
+        }
         Toast.makeText(this, " " + trail.getTrail_name() +" added", Toast.LENGTH_LONG).show();
     }
 }
