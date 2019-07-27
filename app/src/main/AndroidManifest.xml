@@ -4,8 +4,11 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
+        android:name="hikerchat.SocketApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -24,6 +27,17 @@
         <activity android:name=".New_Trail_Activity" />
         <activity android:name=".DetailsActivity" />
 
+        <!-- Chat Activities -->
+
+        <activity
+            android:name="hikerchat.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible">
+        </activity>
+        <activity
+            android:name="hikerchat.NameActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
 
     </application>
 
