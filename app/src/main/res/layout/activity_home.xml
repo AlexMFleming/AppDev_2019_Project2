@@ -21,14 +21,14 @@
         android:id="@+id/searchTrail_Button"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="137dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="16dp"
         android:onClick="findATrail"
         android:text="Find a trail"
         app:layout_constraintBottom_toTopOf="@+id/trailForm_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/addTripButton" />
 
     <Button
         android:id="@+id/trailForm_Button"
@@ -55,5 +55,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trailForm_Button" />
+
+    <Button
+        android:id="@+id/addTripButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="addATrip"
+        android:text="Add a Trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
 
 </android.support.constraint.ConstraintLayout>

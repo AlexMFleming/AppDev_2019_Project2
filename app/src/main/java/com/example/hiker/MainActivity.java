@@ -9,17 +9,19 @@ import android.widget.Button;
 import hikerchat.ChatActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button addTrailButton, searchTrailButton, chatButton;
+    Button planATripButton, addTrailButton, searchTrailButton, chatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        planATripButton = findViewById(R.id.addTripButton);
         addTrailButton = findViewById(R.id.trailForm_Button);
         searchTrailButton = findViewById(R.id.searchTrail_Button);
         chatButton = findViewById(R.id.chatButton);
 
+        planATripButton.setOnClickListener(this);
         addTrailButton.setOnClickListener(this);
         searchTrailButton.setOnClickListener(this);
         chatButton.setOnClickListener(this);
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = new Intent(MainActivity.this, ChatActivity.class);
         startActivity(i);
     }
+    //Direct to Trip_Activity
+    public void planATrip(View view) {
+        Intent i = new Intent (MainActivity.this, Trip_Activity.class);
+        startActivity(i);
+    }
 
     @Override
     public void onClick(View v) {
@@ -50,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findATrail(v);
         } else if (v == chatButton) {
             startChat(v);
+        } else if (v== planATripButton) {
+            planATrip(v);
         }
     }
 }
