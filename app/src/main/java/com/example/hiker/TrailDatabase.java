@@ -424,6 +424,67 @@ public class TrailDatabase extends SQLiteOpenHelper {
         cursor.close();
         return images;
     }
+
+    public List<Station> getStations (long parkId){
+        ArrayList<Station> stations = new ArrayList<>();
+        String sql;
+        SQLiteDatabase db = this.getReadableDatabase();
+        sql = "select * from " + StationTable.TABLE + " where " + StationTable.COL_PARK_ID + " = " + parkId;
+        Cursor cursor = db.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                stations.add(new Station(cursor.getLong(0), cursor.getLong(1), cursor.getString(2), cursor.getString(3)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return stations;
+    }
+
+    public List<Park> getParks (){
+        ArrayList<Park> parks = new ArrayList<>();
+        String sql;
+        SQLiteDatabase db = this.getReadableDatabase();
+        sql = "select * from " + ParkTable.TABLE;
+        Cursor cursor = db.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                parks.add(new Park(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return parks;
+    }
+
+    public Station getStationById(long stationId){
+        String sql;
+        Station station=null;
+        SQLiteDatabase readDb = getReadableDatabase();
+        sql = "select * from " + StationTable.TABLE + " where " + StationTable.COL_STATION_ID + " = " + stationId;
+        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                station = new Station(cursor.getLong(0), cursor.getLong(1), cursor.getString(2), cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return station;
+    }
+
+    public Park getParkById(long parkId){
+        String sql;
+        Park park=null;
+        SQLiteDatabase readDb = getReadableDatabase();
+        sql = "select * from " + ParkTable.TABLE + " where " + ParkTable.COL_PARK_ID + " = " + parkId;
+        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                park = new Park (cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return park;
+    }
+
 //getTrails method for if we use ranges of distances instead of checkboxes
 //    public List<String> getTrails(int distanceUpper, int distanceLower){
 //        List<String> trailnames = new ArrayList<>();

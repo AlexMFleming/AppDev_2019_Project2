@@ -26,6 +26,8 @@
         <activity android:name=".Search_Activity" />
         <activity android:name=".New_Trail_Activity" />
         <activity android:name=".DetailsActivity" />
+        <activity android:name=".Park_List_Activity"/>
+        <activity android:name=".Station_List_Activity"/>
 
         <!-- Chat Activities -->
 

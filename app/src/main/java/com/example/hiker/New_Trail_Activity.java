@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -33,7 +34,9 @@ public class New_Trail_Activity extends AppCompatActivity {
     private final int REQUEST_IMAGE_CAPTURE = 1;
     String filePath;
     private final int REQUEST_WRITE_CODE = 0;
+    private final int REQUEST_STATION_CODE =5;
     Uri imageUri;
+    private Long stationId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +100,14 @@ public class New_Trail_Activity extends AppCompatActivity {
                 Log.d("IOException", "onActivityResult: " + E);
             }
 
+        }else if (requestCode == REQUEST_STATION_CODE && resultCode == REQUEST_STATION_CODE) {
+            TextView parkText = findViewById(R.id.park);
+            TextView stationText = findViewById(R.id.station);
+            stationId = data.getLongExtra("STATIONID", -2);
+            String stationName = data.getStringExtra("STATIONNAME");
+            Log.d("New_Trail_Activity", "onActivityResult: stationName= " + stationName);
+            parkText.setText(data.getStringExtra("PARKNAME"));
+            stationText.setText(stationName);
         }
     }
     private boolean hasFilePermissions(){
@@ -124,6 +135,13 @@ public class New_Trail_Activity extends AppCompatActivity {
             }
         }
     }
+    public void addStationClick(View view) {
+        Intent intent = new Intent(this, Park_List_Activity.class);
+        startActivityForResult(intent, REQUEST_STATION_CODE);
+
+
+    }
+
     public void createTrailClick(View view){
         EditText text = (EditText)findViewById(R.id.newTrail_name_entry);
         String trailName = text.getText().toString();
@@ -156,8 +174,8 @@ public class New_Trail_Activity extends AppCompatActivity {
         if (checkBox2.isChecked()){
             wildlife = 1;
         }
-        long stationid = -1; //placeholder until we get station selection working
-        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationid);
+
+        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationId);
         TrailDb.addTrail(trail);
         Log.d("filepath", "createTrailClick: " + filePath);
         if (filePath!=null){

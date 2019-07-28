@@ -30,7 +30,9 @@ import static android.app.Activity.RESULT_OK;
 public class DetailsFragment extends Fragment {
 
     private Trail mTrail;
-    private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView;
+    private Station mStation;
+    private Park mPark;
+    private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView, parkTextView, stationTextView;
     private ImageView imageView;
     private Menu menu;
     private final int REQUEST_IMAGE_CAPTURE = 1;
@@ -57,6 +59,8 @@ public class DetailsFragment extends Fragment {
 
         mTrail = TrailDatabase.getInstance(getContext()).getTrailById(trailId);
         Log.i("Final trail name: ", mTrail.getTrail_name());
+        mStation = TrailDatabase.getInstance(getContext()).getStationById(mTrail.getStationId());
+        mPark = TrailDatabase.getInstance(getContext()).getParkById(mStation.getPark_id());
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){//builds options menu
@@ -77,11 +81,15 @@ public class DetailsFragment extends Fragment {
         lengthTextView = view.findViewById(R.id.trailLength);
         elevationTextView = view.findViewById(R.id.trailElevate);
         imageView = view.findViewById(R.id.imageView);
+        parkTextView = view.findViewById(R.id.trailPark);
+        stationTextView = view.findViewById(R.id.trailStation);
 
         nameTextView.setText(mTrail.getTrail_name());
         descriptionTextView.setText(mTrail.getDescription());
         lengthTextView.setText(String.valueOf(mTrail.getTrail_distance()));
         elevationTextView.setText(String.valueOf(mTrail.getElevation()));
+        parkTextView.setText(mPark.getName());
+        stationTextView.setText(mStation.getName() + "     phone number: " + mStation.getPhone_number());
 
         List<Image> images = new ArrayList<Image>();
         images = TrailDatabase.getInstance(getContext()).getImageById(mTrail.getTrail_id());
