@@ -22,6 +22,10 @@
     <string name="addImage">Add Image</string>
     <string name="deleteTrail">Delete Trail</string>
 
+    <!-- New Trip Activity -->
+    <string name= "departureDate"> Enter Departure Date</string>
+    <string name= "returnDate"> Enter Return Date</string>
+    <string name= "returnTime"> Enter Expected Return Time</string>
     <!-- Chat_related -->
     <string name="action_leave">Leave</string>
     <string name="action_send">Send</string>
@@ -48,4 +52,5 @@
     <string name="action_sign_in">Join</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_field_required">This field is required</string>
+    <string name="update_add_trip">Update/Add Trip</string>
 </resources>

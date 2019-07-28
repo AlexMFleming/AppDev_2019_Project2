@@ -6,4 +6,7 @@
         app:showAsAction="never"/>
     <item android:id="@+id/deleteTrail"
         android:title="@string/deleteTrail"/>
+    <item android:id="@+id/updateTrip"
+        android:title="@string/update_add_trip"
+        app:showAsAction="never"/>
 </menu>
