@@ -100,8 +100,8 @@ public class TrailDatabase extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("create table " + TripsTable.TABLE + " (" +
                 TripsTable.COL_TR_ID + " integer, " +
-                TripsTable.COL_DEPARTURE + " , " +
-                TripsTable.COL_RETURN + ", " +
+                TripsTable.COL_DEPARTURE + " text, " +
+                TripsTable.COL_RETURN + " text, " +
                 "foreign key(" + TripsTable.COL_TR_ID + ") references " +
                 TrailsTable.TABLE + "(" + TrailsTable.COL_TRAIL_ID + ") on delete cascade, " +
                 "primary key (" + TripsTable.COL_TR_ID + ", " + TripsTable.COL_DEPARTURE + "))");
@@ -223,7 +223,9 @@ public class TrailDatabase extends SQLiteOpenHelper {
         db.insert(TripsTable.TABLE, null, values);
     }
     public void addTrip (Trip trip) {
+        String sql;
         SQLiteDatabase db = getWritableDatabase();
+        db.delete(TripsTable.TABLE, TripsTable.COL_TR_ID + "=?", new String[]{trip.getTr_id()+""});
         ContentValues values = new ContentValues();
         values.put(TripsTable.COL_TR_ID, trip.getTr_id());
         values.put(TripsTable.COL_DEPARTURE, trip.getDeparture());
@@ -274,6 +276,23 @@ public class TrailDatabase extends SQLiteOpenHelper {
         Trail trail=null;
         SQLiteDatabase readDb = getReadableDatabase();
         sql = "select * from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_ID + " = " + id;
+        Log.d(TAG, "getTrailById query: " + sql);
+        Cursor cursor = readDb.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                trail = new Trail(cursor.getLong(0),cursor.getString(1), cursor.getInt(2), cursor.getInt(3),cursor.getInt(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7), cursor.getLong(8));
+                Log.d(TAG, "cursorCount: " + cursor.getCount());
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trail;
+    }
+
+    public Trail getTrailByName(String name){
+        String sql;
+        Trail trail=null;
+        SQLiteDatabase readDb = getReadableDatabase();
+        sql = "select * from " + TrailsTable.TABLE + " where " + TrailsTable.COL_TRAIL_NAME + " = '" + name + "'";
         Log.d(TAG, "getTrailById query: " + sql);
         Cursor cursor = readDb.rawQuery(sql, new String[]{});
         if (cursor.moveToFirst()) {
@@ -393,19 +412,19 @@ public class TrailDatabase extends SQLiteOpenHelper {
         cursor.close();
     }
 
-    public List<Trip> getTrips(long id){//takes the trail id of the selected trail
-        List<Trip> trips = new ArrayList<>();
+    public Trip getTrip(long id){//takes the trail id of the selected trail
+        Trip trip= null;
         String sql;
         SQLiteDatabase readDb = this.getReadableDatabase();
         sql = "select * from " + TripsTable.TABLE + " where " + TripsTable.COL_TR_ID + " = " + id;
         Cursor cursor = readDb.rawQuery(sql, new String[]{});
         if (cursor.moveToFirst()) {
             do {
-                trips.add(new Trip(cursor.getLong(0),cursor.getString(1), cursor.getString(2)));
+                trip = new Trip(cursor.getLong(0),cursor.getString(1), cursor.getString(2));
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return trips;
+        return trip;
 
     }
 
@@ -483,6 +502,21 @@ public class TrailDatabase extends SQLiteOpenHelper {
         }
         cursor.close();
         return park;
+    }
+
+    public EmergencyContact getEmergencyContact(){
+        String sql;
+        EmergencyContact contact = null;
+        SQLiteDatabase db = getReadableDatabase();
+        sql = "select * from " + EmergencyContactTable.TABLE;
+        Cursor cursor = db.rawQuery(sql, new String[]{});
+        if (cursor.moveToFirst()) {
+            do {
+                contact = new EmergencyContact(cursor.getString(0), cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return contact;
     }
 
 //getTrails method for if we use ranges of distances instead of checkboxes
