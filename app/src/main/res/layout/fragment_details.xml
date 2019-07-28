@@ -81,4 +81,34 @@
         android:textSize="20sp"
         tools:text="Elevation" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Park:"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/trailPark"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        tools:text="Park" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Station:"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/trailStation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        tools:text="Park" />
+
 </LinearLayout>
