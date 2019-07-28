@@ -32,7 +32,8 @@ public class DetailsFragment extends Fragment {
     private Trail mTrail;
     private Station mStation;
     private Park mPark;
-    private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView, parkTextView, stationTextView;
+    private Trip mTrip = null;
+    private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView, parkTextView, stationTextView, tripTextView;
     private ImageView imageView;
     private Menu menu;
     private final int REQUEST_IMAGE_CAPTURE = 1;
@@ -61,6 +62,7 @@ public class DetailsFragment extends Fragment {
         Log.i("Final trail name: ", mTrail.getTrail_name());
         mStation = TrailDatabase.getInstance(getContext()).getStationById(mTrail.getStationId());
         mPark = TrailDatabase.getInstance(getContext()).getParkById(mStation.getPark_id());
+        mTrip = TrailDatabase.getInstance(getContext()).getTrip(mTrail.getTrail_id());
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){//builds options menu
@@ -83,14 +85,18 @@ public class DetailsFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         parkTextView = view.findViewById(R.id.trailPark);
         stationTextView = view.findViewById(R.id.trailStation);
+        tripTextView = view.findViewById(R.id.trailPlannedTrips);
+
 
         nameTextView.setText(mTrail.getTrail_name());
         descriptionTextView.setText(mTrail.getDescription());
         lengthTextView.setText(String.valueOf(mTrail.getTrail_distance()));
         elevationTextView.setText(String.valueOf(mTrail.getElevation()));
         parkTextView.setText(mPark.getName());
-        stationTextView.setText(mStation.getName() + "     phone number: " + mStation.getPhone_number());
-
+        stationTextView.setText(mStation.getName() + "\nphone number: " + mStation.getPhone_number());
+        if (mTrip != null){
+            tripTextView.setText("departure date: " + mTrip.getDeparture() + "\nReturn Date : " + mTrip.getReturndate());//will have to be formatted better later. this return date is what we will use to compare with current time and trigger sns
+        }
         List<Image> images = new ArrayList<Image>();
         images = TrailDatabase.getInstance(getContext()).getImageById(mTrail.getTrail_id());
         Log.d("images array", "onCreateView: " + images.toString());
@@ -130,6 +136,12 @@ public class DetailsFragment extends Fragment {
                 break;
             case R.id.deleteTrail:
                 TrailDatabase.getInstance(getContext()).deleteTrail(mTrail.getTrail_id());
+                break;
+            case R.id.updateTrip:
+                Intent intent = new Intent(getContext(), Trip_Activity.class);
+                intent.putExtra("TRAILID", mTrail.getTrail_id());
+                startActivity(intent);
+                break;
         }
         return false;
     }
