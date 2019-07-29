@@ -10,61 +10,68 @@
         android:id="@+id/mainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="142dp"
+        android:layout_marginTop="76dp"
         android:text="Hiker"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/searchTrail_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="128dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:onClick="findATrail"
         android:text="Find a trail"
-        app:layout_constraintBottom_toTopOf="@+id/trailForm_Button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addTripButton"
+        app:layout_constraintEnd_toStartOf="@+id/trailForm_Button"
+        app:layout_constraintHorizontal_bias="0.895"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTripButton" />
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/trailForm_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="121dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="80dp"
         android:onClick="addATrail"
         android:text="Add a Trail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTrail_Button" />
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
 
     <Button
         android:id="@+id/chatButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginBottom="170dp"
+        android:layout_width="128dp"
+        android:layout_height="83dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginBottom="8dp"
         android:text="Enter chatroom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trailForm_Button" />
+        app:layout_constraintTop_toBottomOf="@+id/trailForm_Button"
+        app:layout_constraintVertical_bias="0.017" />
 
     <Button
         android:id="@+id/addTripButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:onClick="addATrip"
-        android:text="Add a Trip"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="128dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chatButton"
+        app:layout_constraintHorizontal_bias="0.923"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+        android:text="Add a Trip"
+        />
+    <!--android:onClick="addATrip"-->
 
 </android.support.constraint.ConstraintLayout>
