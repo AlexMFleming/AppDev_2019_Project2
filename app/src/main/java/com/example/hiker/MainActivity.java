@@ -2,29 +2,36 @@ package com.example.hiker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import hikerchat.ChatActivity;
+import sns.SMS;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button planATripButton, addTrailButton, searchTrailButton, chatButton;
+    Button planATripButton, addTrailButton, searchTrailButton, chatButton, snsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         planATripButton = findViewById(R.id.addTripButton);
         addTrailButton = findViewById(R.id.trailForm_Button);
         searchTrailButton = findViewById(R.id.searchTrail_Button);
         chatButton = findViewById(R.id.chatButton);
+        snsButton = findViewById(R.id.sns);
 
         planATripButton.setOnClickListener(this);
         addTrailButton.setOnClickListener(this);
         searchTrailButton.setOnClickListener(this);
         chatButton.setOnClickListener(this);
+        snsButton.setOnClickListener(this);
     }
 
     //Direct to New_Trail_Activity
@@ -47,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = new Intent (MainActivity.this, Trip_Activity.class);
         startActivity(i);
     }
+    //Virtual test - Don't spam!
+    public void SMSaction(View view) {
+        SMS sms = new SMS("+16788357651", "Test");
+        sms.sendSMSMessage();
+    }
 
     @Override
     public void onClick(View v) {
@@ -59,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startChat(v);
         } else if (v== planATripButton) {
             planATrip(v);
+        } else if (v== snsButton) {
+            SMSaction(v);
         }
     }
 }
