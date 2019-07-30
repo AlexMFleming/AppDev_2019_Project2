@@ -14,7 +14,7 @@ public class SMS {
     private AmazonSNSClient snsClient;
 
     public SMS(String number, String message) {
-        //Demo IAM Role
+        //Demo IAM Role - HAS BEEN DEACTIVATED
         AWSCredentials awsCredentials = new BasicAWSCredentials("AKIAUO6Y6LMDLWY77MVQ", "4P5prqGLSgCpMZ58dL9KBm6MIlgO2YOhoKgsVBby");
         final AmazonSNSClient client = new AmazonSNSClient(awsCredentials);
         client.setRegion(Region.getRegion(Regions.US_EAST_1));

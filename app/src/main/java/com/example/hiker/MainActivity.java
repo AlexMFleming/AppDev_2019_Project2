@@ -11,7 +11,7 @@ import hikerchat.ChatActivity;
 import sns.SMS;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button planATripButton, addTrailButton, searchTrailButton, chatButton, snsButton;
+    Button planATripButton, addTrailButton, searchTrailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         planATripButton = findViewById(R.id.addTripButton);
         addTrailButton = findViewById(R.id.trailForm_Button);
         searchTrailButton = findViewById(R.id.searchTrail_Button);
-        chatButton = findViewById(R.id.chatButton);
-        snsButton = findViewById(R.id.sns);
 
         planATripButton.setOnClickListener(this);
         addTrailButton.setOnClickListener(this);
         searchTrailButton.setOnClickListener(this);
-        chatButton.setOnClickListener(this);
-        snsButton.setOnClickListener(this);
     }
 
     //Direct to New_Trail_Activity
@@ -43,11 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void findATrail(View view){
         Intent intent = new Intent(MainActivity.this, Search_Activity.class);
         startActivity(intent);
-    }
-    //Direct to ChatActivity
-    public void startChat(View view) {
-        Intent i = new Intent(MainActivity.this, ChatActivity.class);
-        startActivity(i);
     }
     //Direct to Trip_Activity
     public void planATrip(View view) {
@@ -67,12 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (v == searchTrailButton) {
             findATrail(v);
-        } else if (v == chatButton) {
-            startChat(v);
         } else if (v== planATripButton) {
             planATrip(v);
-        } else if (v== snsButton) {
-            SMSaction(v);
         }
     }
 }

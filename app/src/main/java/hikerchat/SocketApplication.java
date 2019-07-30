@@ -10,6 +10,7 @@ import io.socket.client.Socket;
 public class SocketApplication extends Application {
     //Free tier AWS EC2 instance
     public static final String EC2 = "http://ec2-34-230-45-91.compute-1.amazonaws.com:8000";
+    public static String stationName;
 
     private Socket mSocket;
     {

@@ -1,5 +1,6 @@
 package com.example.hiker;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.content.ContextCompat;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import hikerchat.ChatActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -36,6 +40,7 @@ public class DetailsFragment extends Fragment {
     private TextView nameTextView, descriptionTextView, lengthTextView, elevationTextView, featuresTextView, parkTextView, stationTextView, tripTextView;
     private ImageView imageView;
     private Menu menu;
+    private Button chatButton;
     private final int REQUEST_IMAGE_CAPTURE = 1;
     private final int REQUEST_WRITE_CODE = 0;
     Random rand = new Random();//used to randomly pick one of the pictures associated with this trail
@@ -87,6 +92,17 @@ public class DetailsFragment extends Fragment {
         stationTextView = view.findViewById(R.id.trailStation);
         tripTextView = view.findViewById(R.id.trailPlannedTrips);
 
+        //Chat room button hookup
+        chatButton = view.findViewById(R.id.chatButton);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ChatActivity.class);
+                i.putExtra("parkname", mStation.getName());
+                Log.i("Park name is ", mStation.getName());
+                startActivity(i);
+            }
+        });
 
         nameTextView.setText(mTrail.getTrail_name());
         descriptionTextView.setText(mTrail.getDescription());
