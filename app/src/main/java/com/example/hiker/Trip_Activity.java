@@ -22,6 +22,7 @@ public class Trip_Activity extends AppCompatActivity {
     Trail trail;
     TextView trailNameView, departureDateView, returnDateView, returnTimeView, emergencyContactView;
     EmergencyContact emergencyContact;
+
     private TrailDatabase TrailDb;
     private final int EMERGENCY_CONTACT_REQUEST_CODE = 3;
     private DatePickerDialog.OnDateSetListener mDepartureDateSetListener;
@@ -30,6 +31,7 @@ public class Trip_Activity extends AppCompatActivity {
     String departureDateforDb;
     String returnDateforDb;
     String returnTimeforDb;
+    boolean returnconfirmed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +59,14 @@ public class Trip_Activity extends AppCompatActivity {
         }
         trip = TrailDb.getTrip(intent.getLongExtra("TRAILID", -1));//will be null after db query if there was no TRAILID sent through intent, this is the case when this activity is started from Main_Activity
         if (trip != null){
-            returnDateView.setText(trip.getDeparture());
-            departureDateView.setText(trip.getReturndate());
+            String tripdeparture = trip.getDeparture();
+            String tripreturn = trip.getReturndate();
+            departureDateView.setText(tripdeparture.substring(5,7)+ "/" + tripdeparture.substring(8,10) + "/" + tripdeparture.substring(0,4));
+            returnDateView.setText(tripreturn.substring(5,7)+ "/" + tripreturn.substring(8,10) + "/" + tripreturn.substring(0,4));
+            returnTimeforDb = tripreturn.substring(11);
+            returnDateforDb = tripreturn.substring(0,11);
+            returnTimeView.setText(returnTimeforDb.substring(0,5));
+            departureDateforDb = tripdeparture;
         }
 
 
@@ -90,16 +98,17 @@ public class Trip_Activity extends AppCompatActivity {
                     departureDateforDb = i + "-" + (i1 + 1) + "-" + i2 + " 01:00:00.000";
                 }
                 departureDateView.setText((i1+1) + "/"+i2+"/"+i);
+                Log.d("trip_activity", "onDateSet: departuredatefordb= " + departureDateforDb);
             }
         };
 
         returnDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(calendar.YEAR);
-                int month = calendar.get(calendar.MONTH);
-                int day = calendar.get(calendar.DAY_OF_MONTH);
+
+                int year =Integer.parseInt(departureDateforDb.substring(0,4));
+                int month = Integer.parseInt(departureDateforDb.substring(5,7))-1;
+                int day = Integer.parseInt(departureDateforDb.substring(8,10));
 
                 DatePickerDialog dialog = new DatePickerDialog(Trip_Activity.this, android.R.style.Theme_Material_Dialog_MinWidth, mReturnDateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -149,30 +158,80 @@ public class Trip_Activity extends AppCompatActivity {
 
                 }
                 returnTimeView.setText(returnTimeforDb);
-                returnTimeforDb=returnTimeforDb+"00.000";
+                returnTimeforDb=returnTimeforDb+":00.000";
             }
         };
 
 
+
+
+
+    }
+    public void confirmReturnClick(View view){
+        if (trail != null && trip !=null){
+            trip.setTripCompleted(1);
+            TrailDb.addTrip(trip);
+            Toast.makeText(this, "Trip Completed! Emergency Notification disabled for this trip", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "You must first add this trip", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void addTrip(View button){
+        int tripCompleted = 0;
         if (trailNameView.getText()==null || departureDateforDb== null || returnDateforDb==null || returnTimeforDb==null){
             Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_LONG).show();
         }else {
+            long current = Calendar.getInstance().getTimeInMillis();
+            Calendar returnTime = Calendar.getInstance();
+            returnTime.set(Integer.parseInt(returnDateforDb.substring(0, 4)), Integer.parseInt(returnDateforDb.substring(5, 7)) - 1, Integer.parseInt(returnDateforDb.substring(8, 10)), Integer.parseInt(returnTimeforDb.substring(0, 2)), Integer.parseInt(returnTimeforDb.substring(3, 5)));
+            if (Calendar.getInstance().getTimeInMillis() >= returnTime.getTimeInMillis()) {
+                tripCompleted = 1;
+            } else{
+                tripCompleted = 0;
+            }
             if (trail != null) {
-                TrailDb.addTrip(new Trip(trail.getTrail_id(), departureDateforDb, returnDateforDb + returnTimeforDb));
+                trip = new Trip(trail.getTrail_id(), departureDateforDb, returnDateforDb + returnTimeforDb, tripCompleted);
+                TrailDb.addTrip(trip);
+                setAlarm();
                 sendResults();
+
             } else {
                 trail = TrailDb.getTrailByName((trailNameView.getText()).toString());
                 if (trail == null) {
                     Toast.makeText(this, "there are no trails by the name " + (trailNameView.getText()).toString(), Toast.LENGTH_LONG).show();
                 } else {
-                    TrailDb.addTrip(new Trip(trail.getTrail_id(), departureDateforDb, returnDateforDb + returnTimeforDb));
+                    trip = new Trip(trail.getTrail_id(), departureDateforDb, returnDateforDb + returnTimeforDb, tripCompleted);
+                    TrailDb.addTrip(trip);
+                    setAlarm();
                     sendResults();
                 }
             }
         }
+    }
+
+    public void setAlarm() {
+        Intent alarmIntent = new Intent(this, EmergencyNotificationIntentService.class);
+        if (trip.getTripCompleted()==1) {
+            returnconfirmed = true;
+
+        }
+
+        int minute = Integer.parseInt(returnTimeforDb.substring(3,5));
+        int hour = Integer.parseInt(returnTimeforDb.substring(0,2));
+        int year = Integer.parseInt(returnDateforDb.substring(0,4));
+        int month = Integer.parseInt(returnDateforDb.substring(5,7))-1;
+        int day = Integer.parseInt(returnDateforDb.substring(8,10));
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute, 0);
+
+        alarmIntent.putExtra("EXTRA_RETURN_MILLIS", calendar.getTimeInMillis());
+        alarmIntent.putExtra("TRAILID", trip.getTr_id());
+        alarmIntent.putExtra("RETURN_CONFIRMED", returnconfirmed);
+        startService(alarmIntent);
     }
 
     public void sendResults() {
@@ -180,4 +239,32 @@ public class Trip_Activity extends AppCompatActivity {
         intent.putExtra(DetailsActivity.EXTRA_TRAIL_ID, trail.getTrail_id());
         startActivity(intent);
     }
+
+   @Override
+   public void onDestroy(){
+       super.onDestroy();
+       if (trip.getTripCompleted()==1) {
+           returnconfirmed = true;
+
+       }else {
+           Log.d("Trip_Activity", "onDestroy: ");
+           Intent broadcastIntent = new Intent();
+           broadcastIntent.setAction("restartservice");
+           broadcastIntent.setClass(this, RestartEmergencyNotificationService.class);
+           int minute = Integer.parseInt(returnTimeforDb.substring(3, 5));
+           int hour = Integer.parseInt(returnTimeforDb.substring(0, 2));
+           int year = Integer.parseInt(returnDateforDb.substring(0, 4));
+           int month = Integer.parseInt(returnDateforDb.substring(5, 7)) - 1;
+           int day = Integer.parseInt(returnDateforDb.substring(8, 10));
+
+
+           Calendar calendar = Calendar.getInstance();
+           calendar.set(year, month, day, hour, minute, 0);
+           broadcastIntent.putExtra("EXTRA_RETURN_MILLIS", calendar.getTimeInMillis());
+           broadcastIntent.putExtra("TRAILID", trip.getTr_id());
+           broadcastIntent.putExtra("RETURN_CONFIRMED", returnconfirmed);
+           this.sendBroadcast(broadcastIntent);
+       }
+
+   }
 }

@@ -14,7 +14,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "trailDatabase.db";
     private static final PopulateDB databaseInstantiate = new PopulateDB();
 
@@ -53,6 +53,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
         private static final String COL_TR_ID = "tr_id";
         private static final String COL_DEPARTURE = "departure";
         private static final String COL_RETURN = "return";
+        private static final String COL_TRIP_COMPLETED = "trip_completed";
     }
 
     private static final class ImagesTable {
@@ -102,6 +103,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
                 TripsTable.COL_TR_ID + " integer, " +
                 TripsTable.COL_DEPARTURE + " text, " +
                 TripsTable.COL_RETURN + " text, " +
+                TripsTable.COL_TRIP_COMPLETED + " integer, " +
                 "foreign key(" + TripsTable.COL_TR_ID + ") references " +
                 TrailsTable.TABLE + "(" + TrailsTable.COL_TRAIL_ID + ") on delete cascade, " +
                 "primary key (" + TripsTable.COL_TR_ID + ", " + TripsTable.COL_DEPARTURE + "))");
@@ -230,6 +232,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
         values.put(TripsTable.COL_TR_ID, trip.getTr_id());
         values.put(TripsTable.COL_DEPARTURE, trip.getDeparture());
         values.put(TripsTable.COL_RETURN, trip.getReturndate());
+        values.put(TripsTable.COL_TRIP_COMPLETED, trip.getTripCompleted());
         db.insert(TripsTable.TABLE, null, values);
     }
     public void addImage (Image image) {
@@ -420,7 +423,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
         Cursor cursor = readDb.rawQuery(sql, new String[]{});
         if (cursor.moveToFirst()) {
             do {
-                trip = new Trip(cursor.getLong(0),cursor.getString(1), cursor.getString(2));
+                trip = new Trip(cursor.getLong(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3));
             } while (cursor.moveToNext());
         }
         cursor.close();

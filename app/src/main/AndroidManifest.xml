@@ -15,7 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Trip_Activity"></activity>
+        <receiver
+            android:name=".RestartEmergencyNotificationService"
+            android:process=":remote">
+            </receiver>
+
+        <service
+            android:name=".EmergencyNotificationIntentService"
+            android:exported="false" />
+
+        <activity android:name=".Trip_Activity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,11 +40,11 @@
         <activity android:name=".Station_List_Activity" /> <!-- Chat Activities -->
         <activity
             android:name="hikerchat.ChatActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="hikerchat.NameActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+            android:windowSoftInputMode="adjustResize|stateVisible" />
     </application>
 
 </manifest>

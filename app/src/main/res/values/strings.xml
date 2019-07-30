@@ -55,4 +55,6 @@
     <string name="update_add_trip">Update/Add Trip</string>
     <string name="channel_name">channel name</string>
     <string name="channel_description">channel descritption</string>
+    <string name="confirmButtonDescription">This will disable the emergency notification feature</string>
+    <string name="confirmButton">Confirm Safe Return From Trip</string>
 </resources>
