@@ -53,4 +53,6 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_field_required">This field is required</string>
     <string name="update_add_trip">Update/Add Trip</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel descritption</string>
 </resources>
