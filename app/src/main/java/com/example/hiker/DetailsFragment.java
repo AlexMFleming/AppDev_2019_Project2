@@ -98,6 +98,8 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), ChatActivity.class);
+                i.putExtra("parkname", mStation.getName());
+                Log.i("Park name is ", mStation.getName());
                 startActivity(i);
             }
         });
@@ -139,10 +141,6 @@ public class DetailsFragment extends Fragment {
         featuresTextView.setText(features);
 
         return view;
-    }
-
-    public void setChatroomName(String trailName) {
-
     }
 
     @Override

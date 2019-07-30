@@ -8,9 +8,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -56,29 +54,30 @@ public class ChatFragment extends Fragment {
     private Socket mSocket;
 
     private Boolean isConnected = true;
+    private String parkName = "Ranger";
 
     public ChatFragment() {
         super();
     }
 
-
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
     // This does not mean the Activity is fully initialized.
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mAdapter = new MessageAdapter(context, mMessages);
-        if (context instanceof Activity){
-            //this.listener = (ChatActivity) context;
-        }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        try {
+            this.parkName = SocketApplication.stationName;
+        } catch (Exception e) {
+            Log.e("Error ", "Park Name Error");
+        }
         setHasOptionsMenu(true);
 
         SocketApplication app = (SocketApplication) getActivity().getApplication();
@@ -90,8 +89,6 @@ public class ChatFragment extends Fragment {
         mSocket.on("new message", onNewMessage);
         mSocket.on("user joined", onUserJoined);
         mSocket.on("user left", onUserLeft);
-        mSocket.on("typing", onTyping);
-        mSocket.on("stop typing", onStopTyping);
         mSocket.connect();
 
         startSignIn();
@@ -116,8 +113,6 @@ public class ChatFragment extends Fragment {
         mSocket.off("new message", onNewMessage);
         mSocket.off("user joined", onUserJoined);
         mSocket.off("user left", onUserLeft);
-        mSocket.off("typing", onTyping);
-        mSocket.off("stop typing", onStopTyping);
     }
 
     @Override
@@ -137,29 +132,6 @@ public class ChatFragment extends Fragment {
                     return true;
                 }
                 return false;
-            }
-        });
-        mInputMessageView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (null == mUsername) return;
-                if (!mSocket.connected()) return;
-
-                if (!mTyping) {
-                    mTyping = true;
-                    mSocket.emit("typing");
-                }
-
-                mTypingHandler.removeCallbacks(onTypingTimeout);
-                mTypingHandler.postDelayed(onTypingTimeout, TYPING_TIMER_LENGTH);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
             }
         });
 
@@ -183,7 +155,7 @@ public class ChatFragment extends Fragment {
         mUsername = data.getStringExtra("username");
         int numUsers = data.getIntExtra("numUsers", 1);
 
-        addLog(getResources().getString(R.string.message_welcome));
+        addLog(getResources().getString(R.string.message_welcome) + " " + parkName + " Chatroom!");
         addParticipantsLog(numUsers);
     }
 
@@ -225,23 +197,6 @@ public class ChatFragment extends Fragment {
                 .username(username).message(message).build());
         mAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
-    }
-
-    private void addTyping(String username) {
-        mMessages.add(new Message.Builder(Message.TYPE_ACTION)
-                .username(username).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
-
-    private void removeTyping(String username) {
-        for (int i = mMessages.size() - 1; i >= 0; i--) {
-            Message message = mMessages.get(i);
-            if (message.getType() == Message.TYPE_ACTION && message.getUsername().equals(username)) {
-                mMessages.remove(i);
-                mAdapter.notifyItemRemoved(i);
-            }
-        }
     }
 
     private void attemptSend() {
@@ -350,7 +305,6 @@ public class ChatFragment extends Fragment {
                         return;
                     }
 
-                    removeTyping(username);
                     addMessage(username, message);
                 }
             });
@@ -400,59 +354,8 @@ public class ChatFragment extends Fragment {
 
                     addLog(getResources().getString(R.string.message_user_left, username));
                     addParticipantsLog(numUsers);
-                    removeTyping(username);
                 }
             });
-        }
-    };
-
-    private Emitter.Listener onTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        Log.e(TAG, e.getMessage());
-                        return;
-                    }
-                    addTyping(username);
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onStopTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        Log.e(TAG, e.getMessage());
-                        return;
-                    }
-                    removeTyping(username);
-                }
-            });
-        }
-    };
-
-    private Runnable onTypingTimeout = new Runnable() {
-        @Override
-        public void run() {
-            if (!mTyping) return;
-
-            mTyping = false;
-            mSocket.emit("stop typing");
         }
     };
 }
