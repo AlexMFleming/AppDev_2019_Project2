@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,6 +44,10 @@ public class ParkListFragment extends Fragment {
         ParkAdapter adapter = new ParkAdapter(parkList);
         recyclerView.setAdapter(adapter);
 
+        //Attaches recyclerview item remover
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         return view;
     }
 
@@ -72,6 +78,7 @@ public class ParkListFragment extends Fragment {
 
     private class ParkAdapter extends RecyclerView.Adapter<ParkHolder> {
         private List<Park> mParks;
+        private Park park;
 
         public ParkAdapter(List<Park> parks) {
             mParks = parks;
@@ -101,6 +108,40 @@ public class ParkListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mParks.size();
+        }
+
+        // Deletes park from recyclerview and from database
+        public void deleteItem(int position) {
+            park = mParks.get(position);
+            long parktoDelete = park.getPark_id();
+            mParks.remove(position);
+            notifyItemRemoved(position);
+
+            //TODO: Create park delete method
+            //TrailDb.deletePark(parktoDelete);
+
+            Toast toast = new Toast(getContext());
+            toast.makeText(getContext(), "Park deleted!", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    // Handles swipe gesture
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+        private ParkAdapter mAdapter;
+
+        public SwipeToDeleteCallback(ParkAdapter adapter) {
+            super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            mAdapter = adapter;
+        }
+
+        @Override
+        public boolean onMove(RecyclerView view, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) { return true; }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            mAdapter.deleteItem(position);
         }
     }
 

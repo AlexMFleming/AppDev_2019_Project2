@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,6 +44,10 @@ public class StationListFragment extends Fragment {
         StationAdapter adapter = new StationAdapter(stationList);
         recyclerView.setAdapter(adapter);
 
+        //Attaches recyclerview item remover
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         return view;
     }
 
@@ -71,6 +77,7 @@ public class StationListFragment extends Fragment {
 
     private class StationAdapter extends RecyclerView.Adapter<StationHolder> {
         private List<Station> mStations;
+        private Station station;
 
         public StationAdapter(List<Station> stations) {
             mStations = stations;
@@ -100,6 +107,40 @@ public class StationListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mStations.size();
+        }
+
+        // Deletes trail from recyclerview and from database
+        public void deleteItem(int position) {
+            station = mStations.get(position);
+            long stationtoDelete = station.getStation_id();
+            mStations.remove(position);
+            notifyItemRemoved(position);
+
+            //TODO: Need a delete method in DB
+            //TrailDb.deleteStation(stationtoDelete);
+
+            Toast toast = new Toast(getContext());
+            toast.makeText(getContext(), "Station deleted!", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    // Handles swipe gesture
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+        private StationAdapter mAdapter;
+
+        public SwipeToDeleteCallback(StationAdapter adapter) {
+            super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            mAdapter = adapter;
+        }
+
+        @Override
+        public boolean onMove(RecyclerView view, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) { return true; }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            mAdapter.deleteItem(position);
         }
     }
 

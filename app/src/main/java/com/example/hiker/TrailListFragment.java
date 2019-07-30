@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,6 +44,10 @@ public class TrailListFragment extends Fragment {
         TrailAdapter adapter = new TrailAdapter(trailList);
         recyclerView.setAdapter(adapter);
 
+        //Attaches recyclerview item remover
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         return view;
     }
 
@@ -72,6 +78,7 @@ public class TrailListFragment extends Fragment {
 
     private class TrailAdapter extends RecyclerView.Adapter<TrailHolder> {
         private List<Trail> mTrails;
+        private Trail trail;
 
         public TrailAdapter(List<Trail> trails) {
             mTrails = trails;
@@ -87,7 +94,7 @@ public class TrailListFragment extends Fragment {
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(TrailHolder holder, int position) {
-            final Trail trail = mTrails.get(position);
+            trail = mTrails.get(position);
 
             holder.id = trail.getTrail_id();
             holder.mTrailName.setText(trail.getTrail_name());
@@ -102,6 +109,39 @@ public class TrailListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mTrails.size();
+        }
+
+        // Deletes trail from recyclerview and from database
+        public void deleteItem(int position) {
+            trail = mTrails.get(position);
+            long trailtoDelete = trail.getTrail_id();
+            mTrails.remove(position);
+            notifyItemRemoved(position);
+
+            TrailDb.deleteTrail(trailtoDelete);
+
+            Toast toast = new Toast(getContext());
+            toast.makeText(getContext(), "Trail deleted!", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    // Handles swipe gesture
+    public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+        private TrailAdapter mAdapter;
+
+        public SwipeToDeleteCallback(TrailAdapter adapter) {
+            super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            mAdapter = adapter;
+        }
+
+        @Override
+        public boolean onMove(RecyclerView view, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) { return true; }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            mAdapter.deleteItem(position);
         }
     }
 
