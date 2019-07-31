@@ -138,50 +138,54 @@ public class New_Trail_Activity extends AppCompatActivity {
     public void addStationClick(View view) {
         Intent intent = new Intent(this, Park_List_Activity.class);
         startActivityForResult(intent, REQUEST_STATION_CODE);
-
-
     }
 
     public void createTrailClick(View view){
-        EditText text = (EditText)findViewById(R.id.newTrail_name_entry);
-        String trailName = text.getText().toString();
+        try {
 
-        text = (EditText)findViewById(R.id.newTrail_elevation_entry);
-        int elevation = Integer.parseInt(text.getText().toString());
+            EditText text = (EditText)findViewById(R.id.newTrail_name_entry);
+            String trailName = text.getText().toString();
 
-        text = (EditText)findViewById(R.id.newTrail_length_entry);
-        int distance = Integer.parseInt(text.getText().toString());
+            text = (EditText)findViewById(R.id.newTrail_elevation_entry);
+            int elevation = Integer.parseInt(text.getText().toString());
 
-        EditText traildesc = findViewById(R.id.newTrail_description);
-        String trailDesc = traildesc.getText().toString();
+            text = (EditText)findViewById(R.id.newTrail_length_entry);
+            int distance = Integer.parseInt(text.getText().toString());
 
+            EditText traildesc = findViewById(R.id.newTrail_description);
+            String trailDesc = traildesc.getText().toString();
 
-        //store the 3 feature elements in one 3 digit binary number. I thought this would be an efficient way to store it but it might end up being
-        //more of a hassle than its worth.
-        //orientation: (waterfalls, creeks, wildlife)
-        CheckBox checkBox = findViewById(R.id.checkBox);
-        CheckBox checkBox1 = findViewById(R.id.checkBox2);
-        CheckBox checkBox2 = findViewById(R.id.checkBox3);
-        int waterfalls = 0;
-        int creek = 0;
-        int wildlife = 0;
-        if (checkBox.isChecked()){
-            waterfalls =1;
+            //store the 3 feature elements in one 3 digit binary number. I thought this would be an efficient way to store it but it might end up being
+            //more of a hassle than its worth.
+            //orientation: (waterfalls, creeks, wildlife)
+            CheckBox checkBox = findViewById(R.id.checkBox);
+            CheckBox checkBox1 = findViewById(R.id.checkBox2);
+            CheckBox checkBox2 = findViewById(R.id.checkBox3);
+            int waterfalls = 0;
+            int creek = 0;
+            int wildlife = 0;
+            if (checkBox.isChecked()){
+                waterfalls =1;
+            }
+            if (checkBox1.isChecked()){
+                creek=1;
+            }
+            if (checkBox2.isChecked()){
+                wildlife = 1;
+            }
+
+            Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationId);
+            TrailDb.addTrail(trail);
+            Log.d("filepath", "createTrailClick: " + filePath);
+            if (filePath!=null){
+                Image image = new Image(trail.getTrail_id(),filePath);
+                TrailDb.addImage(image);
+            }
+            Toast.makeText(this, " " + trail.getTrail_name() +" added", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            //Quick and dirty exception handling for empty fields
+            Toast.makeText(this, "Trail was not saved. Did you enter all the fields?", Toast.LENGTH_LONG).show();
+            finish();
         }
-        if (checkBox1.isChecked()){
-            creek=1;
-        }
-        if (checkBox2.isChecked()){
-            wildlife = 1;
-        }
-
-        Trail trail = new Trail(trailName, distance, elevation, waterfalls, creek, wildlife, trailDesc, stationId);
-        TrailDb.addTrail(trail);
-        Log.d("filepath", "createTrailClick: " + filePath);
-        if (filePath!=null){
-            Image image = new Image(trail.getTrail_id(),filePath);
-            TrailDb.addImage(image);
-        }
-        Toast.makeText(this, " " + trail.getTrail_name() +" added", Toast.LENGTH_LONG).show();
     }
 }

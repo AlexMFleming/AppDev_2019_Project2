@@ -75,6 +75,9 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             this.parkName = SocketApplication.stationName;
+            if (parkName == null) {
+                parkName = "Ranger Station";
+            }
         } catch (Exception e) {
             parkName = "Ranger Station";
             Log.e("Error ", "Park Name Error");

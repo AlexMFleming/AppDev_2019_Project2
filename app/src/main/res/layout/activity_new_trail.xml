@@ -3,106 +3,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/submit_trail"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".New_Trail_Activity">
+    <requestFocus/>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/newTrailTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginLeft="152dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="153dp"
-        android:layout_marginRight="153dp"
-        android:text="New Trail Details"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/newTrail_name_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="@string/trailName_Hint"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="125dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="126dp"
-        android:layout_marginRight="126dp"
-        android:padding="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newTrailTitle">
 
         <ImageView
-            android:id="@+id/camera_frame"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
-
-        <TextView
-            android:id="@+id/text_frame"
+            android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="Create a thumbnail" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newTrail_name_entry">
+            android:alpha=".4"
+            android:scaleType="centerCrop"
+            android:src="@drawable/banner4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/trailLength_Label"
+            android:id="@+id/newTrailTitle"
+            style="@style/AppButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trail Length: " />
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="153dp"
+            android:text="New Trail Details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/newTrail_length_entry"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/trailLength_Hint"
-            android:inputType="number" />
-
-        <TextView
-            android:id="@+id/trailLength_miles_Label"
+            android:id="@+id/newTrail_name_entry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:text="miles" />
+            android:layout_marginTop="20dp"
+            android:hint="@string/trailName_Hint"
+            android:inputType="text"
+            android:textColor="#0A0A0A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="126dp"
+            android:padding="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newTrailTitle">
+
+            <ImageView
+                android:id="@+id/camera_frame"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <TextView
+                android:id="@+id/text_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="Create a thumbnail"
+                android:textColor="#0A0A0A" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newTrail_name_entry">
+
+            <TextView
+                android:id="@+id/trailLength_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trail Length: "
+                android:textColor="#0A0A0A" />
+
+            <EditText
+                android:id="@+id/newTrail_length_entry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/trailLength_Hint"
+                android:inputType="number"
+                android:textColor="#0A0A0A" />
+
+            <TextView
+                android:id="@+id/trailLength_miles_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text="miles"
+                android:textColor="#0A0A0A" />
+
+        </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/checkboxLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -116,7 +135,8 @@
             android:id="@+id/elevation_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Elevation gain: " />
+            android:text="Elevation gain: "
+            android:textColor="#0A0A0A" />
 
         <EditText
             android:id="@+id/newTrail_elevation_entry"
@@ -124,8 +144,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:gravity="center"
             android:hint="@string/trailElev_Hint"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="#0A0A0A" />
 
         <TextView
             android:id="@+id/elevation_ft_Label"
@@ -133,136 +155,136 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="feet" />
+            android:text="feet"
+            android:textColor="#0A0A0A" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/newTrail_options_Label"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="165dp"
-        android:text="Does it have:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newTrail_description" />
+        <TextView
+            android:id="@+id/newTrail_options_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="165dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="165dp"
+            android:layout_marginBottom="13dp"
+            android:text="Does it have:"
+            android:textColor="#0A0A0A"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newTrail_description" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="Waterfalls"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newTrail_options_Label" />
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newTrail_options_Label">
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Creeks"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Waterfalls" />
 
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Wildlife"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Creeks" />
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wildlife" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/addStation_Button"
+            style="@style/AppButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="23dp"
             android:onClick="addStationClick"
-            android:text="add Station/ Park"
+            android:text="Add Station/Park"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.092"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-        <Button
-        android:id="@+id/newTrail_submit_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:onClick="createTrailClick"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addStation_Button" />
-
-    <EditText
-        android:id="@+id/newTrail_description"
-        android:layout_width="315dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:ems="10"
-        android:hint="@string/trailDesc_Hint"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-        <TextView
-            android:id="@+id/stationLabel"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/newTrail_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Station:"
-            app:layout_constraintEnd_toStartOf="@+id/station"
-            app:layout_constraintStart_toEndOf="@+id/addStation_Button"
-            app:layout_constraintTop_toBottomOf="@+id/parkLabel" />
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="48dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/trailDesc_Hint"
+            android:inputType="textPersonName"
+            android:textColor="#0A0A0A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkboxLL" />
 
         <TextView
             android:id="@+id/park"
+            style="@style/AppLabels1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="70dp"
-            android:text="none selected"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/addStation_Button"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
-
-        <TextView
-            android:id="@+id/parkLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Park:"
-            app:layout_constraintEnd_toStartOf="@+id/park"
-            app:layout_constraintStart_toEndOf="@+id/addStation_Button"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+            android:layout_marginLeft="167dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="167dp"
+            android:gravity="center"
+            android:text="None"
+            android:textColor="#0A0A0A"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addStation_Button" />
 
         <TextView
             android:id="@+id/station"
+            style="@style/AppLabels1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="70dp"
-            android:text="none selected"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/addStation_Button"
+            android:layout_marginLeft="167dp"
+            android:layout_marginRight="167dp"
+            android:gravity="center"
+            android:text="None"
+            android:textColor="#0A0A0A"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/park" />
+
+        <Button
+            android:id="@+id/newTrail_submit_Button"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:onClick="createTrailClick"
+            android:text="Submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/station" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

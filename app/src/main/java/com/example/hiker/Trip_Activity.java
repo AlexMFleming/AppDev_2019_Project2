@@ -243,28 +243,32 @@ public class Trip_Activity extends AppCompatActivity {
    @Override
    public void onDestroy(){
        super.onDestroy();
-       if (trip.getTripCompleted()==1) {
-           returnconfirmed = true;
+       try {
+           if (trip.getTripCompleted()==1) {
+               returnconfirmed = true;
 
-       }else {
-           Log.d("Trip_Activity", "onDestroy: ");
-           Intent broadcastIntent = new Intent();
-           broadcastIntent.setAction("restartservice");
-           broadcastIntent.setClass(this, RestartEmergencyNotificationService.class);
-           int minute = Integer.parseInt(returnTimeforDb.substring(3, 5));
-           int hour = Integer.parseInt(returnTimeforDb.substring(0, 2));
-           int year = Integer.parseInt(returnDateforDb.substring(0, 4));
-           int month = Integer.parseInt(returnDateforDb.substring(5, 7)) - 1;
-           int day = Integer.parseInt(returnDateforDb.substring(8, 10));
+           }else {
+               Log.d("Trip_Activity", "onDestroy: ");
+               Intent broadcastIntent = new Intent();
+               broadcastIntent.setAction("restartservice");
+               broadcastIntent.setClass(this, RestartEmergencyNotificationService.class);
+               int minute = Integer.parseInt(returnTimeforDb.substring(3, 5));
+               int hour = Integer.parseInt(returnTimeforDb.substring(0, 2));
+               int year = Integer.parseInt(returnDateforDb.substring(0, 4));
+               int month = Integer.parseInt(returnDateforDb.substring(5, 7)) - 1;
+               int day = Integer.parseInt(returnDateforDb.substring(8, 10));
 
 
-           Calendar calendar = Calendar.getInstance();
-           calendar.set(year, month, day, hour, minute, 0);
-           broadcastIntent.putExtra("EXTRA_RETURN_MILLIS", calendar.getTimeInMillis());
-           broadcastIntent.putExtra("TRAILID", trip.getTr_id());
-           broadcastIntent.putExtra("RETURN_CONFIRMED", returnconfirmed);
-           this.sendBroadcast(broadcastIntent);
+               Calendar calendar = Calendar.getInstance();
+               calendar.set(year, month, day, hour, minute, 0);
+               broadcastIntent.putExtra("EXTRA_RETURN_MILLIS", calendar.getTimeInMillis());
+               broadcastIntent.putExtra("TRAILID", trip.getTr_id());
+               broadcastIntent.putExtra("RETURN_CONFIRMED", returnconfirmed);
+               this.sendBroadcast(broadcastIntent);
+           }
+       } catch (Exception e) {
+           //Exception handling needed.
+           Log.i("Crash caught", "Handle it later... :P");
        }
-
    }
 }
