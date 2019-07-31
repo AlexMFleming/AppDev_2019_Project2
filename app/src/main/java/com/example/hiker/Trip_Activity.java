@@ -66,14 +66,14 @@ public class Trip_Activity extends AppCompatActivity {
             deleteSharedPreferences("MYPREFERENCES");
 
             if (trail == null) {
-                findViewById(R.id.calledFromTrail).setVisibility(View.GONE);
-                trailNameView = findViewById(R.id.calledFromMain);
+                findViewById(R.id.calledFromMain).setVisibility(View.GONE);
+                trailNameView = findViewById(R.id.calledFromTrail);
                 if (!trailName.matches("")){
                     trailNameView.setText(trailName);
                 }
             }else{
                 findViewById(R.id.calledFromMain).setVisibility(View.GONE);
-                trailNameView = findViewById(R.id.calledFromMain);
+                trailNameView = findViewById(R.id.calledFromTrail);
                 trailNameView.setText(trail.getTrail_name());
             }
 

@@ -1,137 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/trailNameView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Trip_Activity">
-
-    <ImageView
-        android:id="@+id/imageView2"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".8"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/banner5"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="2dp" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/banner5"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="2dp" />
 
-    <TextView
-        android:id="@+id/calledFromTrail"
-        style="@style/AppLabels1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/calledFromTrail"
+            style="@style/AppLabels1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/calledFromMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:hint="Insert Trail Name"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/calledFromMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:hint="Insert Trail Name"
+            android:textColor="#000000"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/departureDateView"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
-        android:text="@string/departureDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/departureDateView"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="175dp"
+            android:text="@string/departureDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/returnDateView"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="@string/returnDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/departureDateView" />
+        <TextView
+            android:id="@+id/returnDateView"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:text="@string/returnDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/departureDateView" />
 
-    <TextView
-        android:id="@+id/returnTimeView"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:text="@string/returnTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/returnDateView" />
+        <TextView
+            android:id="@+id/returnTimeView"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="53dp"
+            android:text="@string/returnTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/returnDateView" />
 
-    <TextView
-        android:id="@+id/emergencyContactView"
-        style="@style/AppLabels1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Please Update Your Emergency Contact"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/returnTimeView" />
+        <TextView
+            android:id="@+id/emergencyContactView"
+            style="@style/AppLabels1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="Please Update Your Emergency Contact"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/returnTimeView" />
 
-    <Button
-        android:id="@+id/updateEmergencyContactButton"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="updateEmergencyContact"
-        android:text="update emergency \ncontact"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addTripButton"
-        app:layout_constraintTop_toBottomOf="@+id/emergencyContactView" />
+        <Button
+            android:id="@+id/updateEmergencyContactButton"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="updateEmergencyContact"
+            android:text="update emergency \ncontact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/addTripButton"
+            app:layout_constraintTop_toBottomOf="@+id/emergencyContactView" />
 
-    <Button
-        android:id="@+id/addTripButton"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addTrip"
-        android:text="add trip"
-        app:layout_constraintEnd_toStartOf="@id/updateEmergencyContactButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emergencyContactView" />
+        <Button
+            android:id="@+id/addTripButton"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addTrip"
+            android:text="add trip"
+            app:layout_constraintEnd_toStartOf="@id/updateEmergencyContactButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emergencyContactView" />
 
-    <Button
-        android:id="@+id/confirmReturn"
-        style="@style/AppButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:onClick="confirmReturnClick"
-        android:text="@string/confirmButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/emergencyContactView" />
+        <Button
+            android:id="@+id/confirmReturn"
+            style="@style/AppButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:onClick="confirmReturnClick"
+            android:text="@string/confirmButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/emergencyContactView" />
 
-    <TextView
-        android:id="@+id/textView5"
-        style="@style/AppLabels1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/confirmButtonDescription"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmReturn" />
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/AppLabels1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/confirmButtonDescription"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmReturn" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
