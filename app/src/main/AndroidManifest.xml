@@ -25,13 +25,14 @@
             android:exported="false" />
 
         <activity android:name=".Trip_Activity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".Trail_List_Activity" />
         <activity android:name=".Search_Activity" />
         <activity android:name=".New_Trail_Activity" />

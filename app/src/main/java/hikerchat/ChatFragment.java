@@ -76,6 +76,7 @@ public class ChatFragment extends Fragment {
         try {
             this.parkName = SocketApplication.stationName;
         } catch (Exception e) {
+            parkName = "Ranger Station";
             Log.e("Error ", "Park Name Error");
         }
         setHasOptionsMenu(true);
