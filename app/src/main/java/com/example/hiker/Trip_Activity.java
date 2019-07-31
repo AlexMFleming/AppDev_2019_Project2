@@ -26,6 +26,7 @@ public class Trip_Activity extends AppCompatActivity {
     Trail trail;
     TextView trailNameView, departureDateView, returnDateView, returnTimeView, emergencyContactView;
     EmergencyContact emergencyContact;
+    boolean departureFlag = false;
 
     private TrailDatabase TrailDb;
     private final int EMERGENCY_CONTACT_REQUEST_CODE = 3;
@@ -145,6 +146,7 @@ public class Trip_Activity extends AppCompatActivity {
                     departureDateforDb = i + "-" + (i1 + 1) + "-" + i2 + " 01:00:00.000";
                 }
                 departureDateView.setText((i1+1) + "/"+i2+"/"+i);
+                departureFlag = true;
                 Log.d("trip_activity", "onDateSet: departuredatefordb= " + departureDateforDb);
             }
         };
@@ -152,14 +154,15 @@ public class Trip_Activity extends AppCompatActivity {
         returnDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (departureFlag) {
+                    int year =Integer.parseInt(departureDateforDb.substring(0,4));
+                    int month = Integer.parseInt(departureDateforDb.substring(5,7))-1;
+                    int day = Integer.parseInt(departureDateforDb.substring(8,10));
 
-                int year =Integer.parseInt(departureDateforDb.substring(0,4));
-                int month = Integer.parseInt(departureDateforDb.substring(5,7))-1;
-                int day = Integer.parseInt(departureDateforDb.substring(8,10));
-
-                DatePickerDialog dialog = new DatePickerDialog(Trip_Activity.this, android.R.style.Theme_Material_Dialog_MinWidth, mReturnDateSetListener, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                    DatePickerDialog dialog = new DatePickerDialog(Trip_Activity.this, android.R.style.Theme_Material_Dialog_MinWidth, mReturnDateSetListener, year, month, day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+                }
             }
 
         });
@@ -234,6 +237,7 @@ public class Trip_Activity extends AppCompatActivity {
         editor.putString("RETURNDATE", returnDateforDb);
         editor.putString("RETURNTIME", returnTimeforDb);
         editor.putLong("TRAILID", trail.getTrail_id());
+
         editor.commit();
 
         Intent intent = new Intent(this, UpdateEmergencyContact.class);

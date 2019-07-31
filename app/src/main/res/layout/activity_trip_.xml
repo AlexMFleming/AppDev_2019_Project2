@@ -7,12 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".Trip_Activity">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha=".8"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/banner5"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="2dp" />
+
     <TextView
         android:id="@+id/calledFromTrail"
+        style="@style/AppLabels1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:text="TextView"
+        android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,13 +35,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="Insert Trail Name"
+        android:hint="Insert Trail Name"
+        android:textColor="#000000"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/departureDateView"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="175dp"
@@ -40,6 +55,7 @@
 
     <TextView
         android:id="@+id/returnDateView"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
@@ -50,6 +66,7 @@
 
     <TextView
         android:id="@+id/returnTimeView"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
@@ -60,16 +77,20 @@
 
     <TextView
         android:id="@+id/emergencyContactView"
+        style="@style/AppLabels1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="please update emergency contact"
+        android:text="Please Update Your Emergency Contact"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnTimeView" />
 
     <Button
         android:id="@+id/updateEmergencyContactButton"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="updateEmergencyContact"
@@ -80,6 +101,7 @@
 
     <Button
         android:id="@+id/addTripButton"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addTrip"
@@ -90,6 +112,7 @@
 
     <Button
         android:id="@+id/confirmReturn"
+        style="@style/AppButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -101,10 +124,13 @@
 
     <TextView
         android:id="@+id/textView5"
+        style="@style/AppLabels1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/confirmButtonDescription"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmReturn" />

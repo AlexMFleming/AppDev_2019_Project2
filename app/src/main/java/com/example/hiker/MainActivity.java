@@ -2,12 +2,9 @@ package com.example.hiker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-
-import hikerchat.ChatActivity;
 import sns.SMS;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -18,9 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         planATripButton = findViewById(R.id.addTripButton);
         addTrailButton = findViewById(R.id.trailForm_Button);
         searchTrailButton = findViewById(R.id.searchTrail_Button);
@@ -28,6 +22,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         planATripButton.setOnClickListener(this);
         addTrailButton.setOnClickListener(this);
         searchTrailButton.setOnClickListener(this);
+
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e) { }
     }
 
     //Direct to New_Trail_Activity
