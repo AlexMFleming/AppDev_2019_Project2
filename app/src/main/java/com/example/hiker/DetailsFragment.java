@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -119,7 +120,8 @@ public class DetailsFragment extends Fragment {
         if (images.size()>0){
             int n = rand.nextInt(images.size());//random number between 0 and images.size()(exclusive)
             try { //i struggled for hours to find out how to read a file based off the filename. this hardcoded string part may change between emulators/ phone versions/ and apis.
-                imageView.setImageBitmap(BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/" + images.get(n).getFilename()));
+                //imageView.setImageBitmap(BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/" + images.get(n).getFilename()));
+                imageView.setImageURI(Uri.parse(images.get(n).getFilename()));
 
             } catch (Exception e) {
                e.printStackTrace();
@@ -182,7 +184,8 @@ public class DetailsFragment extends Fragment {
                     filePath = imageUri.getLastPathSegment().toString();//this gets the image name
                 }
                 cursor.close();
-                Image image = new Image (mTrail.getTrail_id(), filePath);
+                //Image image = new Image (mTrail.getTrail_id(), filePath);
+                Image image = new Image (mTrail.getTrail_id(), imageUri.toString());
                 TrailDatabase.getInstance(getContext()).addImage(image);
                 Log.d("imageUri", "filePath " + filePath);
             }catch(IOException E){

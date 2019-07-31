@@ -2,6 +2,7 @@ package com.example.hiker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,10 +57,12 @@ public class TrailListFragment extends Fragment {
         private Trail mTrail;
         private long id;
         private TextView mTrailName, mTrailLength, mTrailElevation, mTrailDescription;
+        private ImageView mTrailImage;
 
         public TrailHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_trail, parent, false));
             itemView.setOnClickListener(this);
+            mTrailImage = itemView.findViewById(R.id.trail_image);
             mTrailName = itemView.findViewById(R.id.trailName);
             mTrailLength = itemView.findViewById(R.id.trailLength);
             mTrailElevation = itemView.findViewById(R.id.trailElev);
@@ -95,7 +99,9 @@ public class TrailListFragment extends Fragment {
         @Override
         public void onBindViewHolder(TrailHolder holder, int position) {
             trail = mTrails.get(position);
-
+            if (TrailDb.getImageById(trail.getTrail_id()).size()>0) {
+                holder.mTrailImage.setImageURI(Uri.parse(TrailDb.getImageById(trail.getTrail_id()).get(0).getFilename()));
+            }
             holder.id = trail.getTrail_id();
             holder.mTrailName.setText(trail.getTrail_name());
             //Need to wrap ints to String
