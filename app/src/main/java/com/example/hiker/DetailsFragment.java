@@ -117,6 +117,8 @@ public class DetailsFragment extends Fragment {
         if (mTrip != null){
             tripTextView.setText("departure date: " + mTrip.getDeparture() + "\nReturn Date : " + mTrip.getReturndate());//will have to be formatted better later. this return date is what we will use to compare with current time and trigger sns
         }
+
+        setImages(mTrail.getTrail_name());
         List<Image> images = new ArrayList<Image>();
         images = TrailDatabase.getInstance(getContext()).getImageById(mTrail.getTrail_id());
         Log.d("images array", "onCreateView: " + images.toString());
@@ -146,6 +148,83 @@ public class DetailsFragment extends Fragment {
         featuresTextView.setText(features);
 
         return view;
+    }
+
+    public void setImages(String trailName) {
+        switch (trailName) {
+            case "Art Loeb":
+                imageView.setImageResource(R.drawable.angels);
+                break;
+            case "Blood Mountain":
+                imageView.setImageResource(R.drawable.angels);
+                break;
+            case "Bear Creek":
+                imageView.setImageResource(R.drawable.banner4);
+                break;
+            case "Iceberg Lake Trail":
+                imageView.setImageResource(R.drawable.iceberg);
+                break;
+            case "Tower Arch Trail":
+                imageView.setImageResource(R.drawable.towerarch);
+                break;
+            case "The Boardwalk Loop":
+                imageView.setImageResource(R.drawable.boardwalk);
+                break;
+            case "The Hoh River Trail":
+                imageView.setImageResource(R.drawable.hohriver);
+                break;
+            case "The Wonderland Trail":
+                imageView.setImageResource(R.drawable.wonderland);
+                break;
+            case "Slaughter Canyon Cave":
+                imageView.setImageResource(R.drawable.slaughtercanyon);
+                break;
+            case "Angel Landing":
+                imageView.setImageResource(R.drawable.angels);
+                break;
+            case "Tall Trees Trail":
+                imageView.setImageResource(R.drawable.talltrees);
+                break;
+            case "Cadillac Mountain":
+                imageView.setImageResource(R.drawable.cadillac);
+                break;
+            case "Lost Mine Trail":
+                imageView.setImageResource(R.drawable.lostmine);
+                break;
+            case "Sierra Point":
+                imageView.setImageResource(R.drawable.sierrapoint);
+                break;
+            case "Mt. Katmai Caldera":
+                imageView.setImageResource(R.drawable.katmai);
+                break;
+            case "Kalapana Lava Viewing":
+                imageView.setImageResource(R.drawable.kalapana);
+                break;
+            case "The Narrows":
+                imageView.setImageResource(R.drawable.narrows);
+                break;
+            case "Fairyland Loop":
+                imageView.setImageResource(R.drawable.fairyland);
+                break;
+            case "North Kaibab Trail":
+                imageView.setImageResource(R.drawable.northkaibab);
+                break;
+            case "Exit Glacier":
+                imageView.setImageResource(R.drawable.exitglacier);
+                break;
+            case "Moraine Lake":
+                imageView.setImageResource(R.drawable.moraine);
+                break;
+            case "Lower Bear Gulch":
+                imageView.setImageResource(R.drawable.lowerbear);
+                break;
+            case "Cascades Pass Trail":
+                imageView.setImageResource(R.drawable.cascades);
+                break;
+            case "Greenstone Ridge Trail":
+                imageView.setImageResource(R.drawable.greenstone);
+                break;
+        }
     }
 
     @Override
