@@ -15,17 +15,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
+        <activity
+            android:name=".UpdateEmergencyContact"
+            android:label="@string/title_activity_update_emergency_contact"
+            android:parentActivityName=".Trip_Activity"></activity>
+
         <receiver
             android:name=".RestartEmergencyNotificationService"
-            android:process=":remote">
-            </receiver>
+            android:process=":remote"></receiver>
 
         <service
             android:name=".EmergencyNotificationIntentService"
             android:exported="false" />
 
-        <activity android:name=".Trip_Activity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".Trip_Activity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,22 +39,28 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".Trail_List_Activity"
-            android:parentActivityName=".Search_Activity"/>
-        <activity android:name=".Search_Activity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".New_Trail_Activity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".DetailsActivity"
-            android:parentActivityName=".Trail_List_Activity"/>
-        <activity android:name=".Park_List_Activity"
-            android:parentActivityName=".New_Trail_Activity"/>
-        <activity android:name=".Station_List_Activity"
-            android:parentActivityName=".Park_List_Activity"/> <!-- Chat Activities -->
+        <activity
+            android:name=".Trail_List_Activity"
+            android:parentActivityName=".Search_Activity" />
+        <activity
+            android:name=".Search_Activity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".New_Trail_Activity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".DetailsActivity"
+            android:parentActivityName=".Trail_List_Activity" />
+        <activity
+            android:name=".Park_List_Activity"
+            android:parentActivityName=".New_Trail_Activity" />
+        <activity
+            android:name=".Station_List_Activity"
+            android:parentActivityName=".Park_List_Activity" /> <!-- Chat Activities -->
         <activity
             android:name="hikerchat.ChatActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible"
-            android:parentActivityName=".DetailsActivity"/>
+            android:parentActivityName=".DetailsActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="hikerchat.NameActivity"
             android:label="@string/title_activity_login"

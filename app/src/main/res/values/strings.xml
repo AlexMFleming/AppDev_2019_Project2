@@ -10,7 +10,7 @@
     <string name="fivetotenmiles">5 &#8211; 10 Miles</string>
     <string name="fifteenmiles"><![CDATA[> 15 Miles]]></string>
     <string name="sevenhunmiles"><![CDATA[< 700 ft]]></string>
-    <string name="sevenhtofivehmiles">500 &#8211; 700 ft</string>
+    <string name="sevenhtofivehmiles">700 &#8211; 1500 ft</string>
     <string name="fifteenhmiles"><![CDATA[> 1500 ft]]></string>
     <string name="waterfalls">Waterfalls</string>
     <string name="creeks">Creeks</string>
@@ -23,9 +23,9 @@
     <string name="deleteTrail">Delete Trail</string>
 
     <!-- New Trip Activity -->
-    <string name= "departureDate"> Enter Departure Date</string>
-    <string name= "returnDate"> Enter Return Date</string>
-    <string name= "returnTime"> Enter Expected Return Time</string>
+    <string name="departureDate"> Enter Departure Date</string>
+    <string name="returnDate"> Enter Return Date</string>
+    <string name="returnTime"> Enter Expected Return Time</string>
     <!-- Chat_related -->
     <string name="action_leave">Leave</string>
     <string name="action_send">Send</string>
@@ -57,4 +57,5 @@
     <string name="channel_description">channel descritption</string>
     <string name="confirmButtonDescription">This will disable the emergency notification feature</string>
     <string name="confirmButton">Confirm Safe Return From Trip</string>
+    <string name="title_activity_update_emergency_contact">UpdateEmergencyContact</string>
 </resources>

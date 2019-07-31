@@ -2,7 +2,10 @@ package com.example.hiker;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
@@ -33,6 +36,9 @@ public class Trip_Activity extends AppCompatActivity {
     String returnDateforDb;
     String returnTimeforDb;
     boolean returnconfirmed = false;
+
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,29 +55,65 @@ public class Trip_Activity extends AppCompatActivity {
         trail = TrailDb.getTrailById(getIntent().getLongExtra("TRAILID", -1));//will be null if called from Main_Activity
         Intent intent = getIntent();
 
-        if (trail == null){
-            findViewById(R.id.calledFromTrail).setVisibility(View.GONE);
-            trailNameView=findViewById(R.id.calledFromMain);
+        if (getSharedPreferences("MYPREFERENCES", Context.MODE_PRIVATE).contains("TRAILNAME")){
+            sharedPreferences = getSharedPreferences("MYPREFERENCES", Context.MODE_PRIVATE);
+            trailName = sharedPreferences.getString("TRAILNAME", "");
+            returnTimeforDb = sharedPreferences.getString("RETURNTIME", "");
+            returnDateforDb = sharedPreferences.getString("RETURNDATE", "");
+            departureDateforDb = sharedPreferences.getString("DEPARTUREDATE", "");
+            trail = TrailDb.getTrailById(sharedPreferences.getLong("TRAILID", -1));
+            deleteSharedPreferences("MYPREFERENCES");
+
+            if (trail == null) {
+                findViewById(R.id.calledFromTrail).setVisibility(View.GONE);
+                trailNameView = findViewById(R.id.calledFromMain);
+                if (!trailName.matches("")){
+                    trailNameView.setText(trailName);
+                }
+            }else{
+                findViewById(R.id.calledFromMain).setVisibility(View.GONE);
+                trailNameView = findViewById(R.id.calledFromMain);
+                trailNameView.setText(trail.getTrail_name());
+            }
+
+            if (!departureDateforDb.matches("")){
+                departureDateView.setText(departureDateforDb.substring(5, 7) + "/" + departureDateforDb.substring(8, 10) + "/" + departureDateforDb.substring(0, 4));
+            }
+            if(!returnDateforDb.matches("")){
+                returnDateView.setText(returnDateforDb.substring(5, 7) + "/" + returnDateforDb.substring(8, 10) + "/" + returnDateforDb.substring(0, 4));
+            }
+            if(!returnTimeforDb.matches("")){
+                returnTimeView.setText(returnTimeforDb.substring(0, 5));
+            }
+
         }else {
-            findViewById(R.id.calledFromMain).setVisibility(View.GONE);
-            trailNameView=findViewById(R.id.calledFromTrail);
-            trailName = trail.getTrail_name();
-            trailNameView.setText(trailName);
+
+
+            if (trail == null) {
+                findViewById(R.id.calledFromTrail).setVisibility(View.GONE);
+                trailNameView = findViewById(R.id.calledFromMain);
+            } else {
+                findViewById(R.id.calledFromMain).setVisibility(View.GONE);
+                trailNameView = findViewById(R.id.calledFromTrail);
+                trailName = trail.getTrail_name();
+                trailNameView.setText(trailName);
+            }
+
+            trip = TrailDb.getTrip(intent.getLongExtra("TRAILID", -1));//will be null after db query if there was no TRAILID sent through intent, this is the case when this activity is started from Main_Activity
+            if (trip != null) {
+                String tripdeparture = trip.getDeparture();
+                String tripreturn = trip.getReturndate();
+                departureDateView.setText(tripdeparture.substring(5, 7) + "/" + tripdeparture.substring(8, 10) + "/" + tripdeparture.substring(0, 4));
+                returnDateView.setText(tripreturn.substring(5, 7) + "/" + tripreturn.substring(8, 10) + "/" + tripreturn.substring(0, 4));
+                returnTimeforDb = tripreturn.substring(11);
+                returnDateforDb = tripreturn.substring(0, 11);
+                returnTimeView.setText(returnTimeforDb.substring(0, 5));
+                departureDateforDb = tripdeparture;
+            }
         }
         emergencyContact = TrailDb.getEmergencyContact();
         if (emergencyContact != null) {
             emergencyContactView.setText("Name: " + emergencyContact.getName() + " Number: " + emergencyContact.getPhoneNumber());
-        }
-        trip = TrailDb.getTrip(intent.getLongExtra("TRAILID", -1));//will be null after db query if there was no TRAILID sent through intent, this is the case when this activity is started from Main_Activity
-        if (trip != null){
-            String tripdeparture = trip.getDeparture();
-            String tripreturn = trip.getReturndate();
-            departureDateView.setText(tripdeparture.substring(5,7)+ "/" + tripdeparture.substring(8,10) + "/" + tripdeparture.substring(0,4));
-            returnDateView.setText(tripreturn.substring(5,7)+ "/" + tripreturn.substring(8,10) + "/" + tripreturn.substring(0,4));
-            returnTimeforDb = tripreturn.substring(11);
-            returnDateforDb = tripreturn.substring(0,11);
-            returnTimeView.setText(returnTimeforDb.substring(0,5));
-            departureDateforDb = tripdeparture;
         }
 
 
@@ -181,6 +223,21 @@ public class Trip_Activity extends AppCompatActivity {
             Toast.makeText(this, "You must first add this trip", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void updateEmergencyContact(View view){
+        sharedPreferences = getSharedPreferences("MYPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("TRAILNAME", trailName);
+        editor.putString("DEPARTUREDATE", departureDateforDb);
+        editor.putString("RETURNDATE", returnDateforDb);
+        editor.putString("RETURNTIME", returnTimeforDb);
+        editor.putLong("TRAILID", trail.getTrail_id());
+        editor.commit();
+
+        Intent intent = new Intent(this, UpdateEmergencyContact.class);
+        startActivity(intent);
     }
 
     public void addTrip(View button){

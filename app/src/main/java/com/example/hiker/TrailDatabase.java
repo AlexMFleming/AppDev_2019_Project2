@@ -14,7 +14,7 @@ import static android.content.ContentValues.TAG;
 
 public class TrailDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "trailDatabase.db";
     private static final PopulateDB databaseInstantiate = new PopulateDB();
 
@@ -272,6 +272,7 @@ public class TrailDatabase extends SQLiteOpenHelper {
                 EmergencyContactTable.COL_PHONE_NUMBER + ")");
         values.put(EmergencyContactTable.COL_NAME, emergencyContact.getName());
         values.put(EmergencyContactTable.COL_PHONE_NUMBER, emergencyContact.getPhoneNumber());
+        db.insert(EmergencyContactTable.TABLE, null, values);
     }
 
     public Trail getTrailById(long id){
@@ -512,7 +513,9 @@ public class TrailDatabase extends SQLiteOpenHelper {
         EmergencyContact contact = null;
         SQLiteDatabase db = getReadableDatabase();
         sql = "select * from " + EmergencyContactTable.TABLE;
+
         Cursor cursor = db.rawQuery(sql, new String[]{});
+        Log.d(TAG, "getEmergencyContact: "+ cursor.getCount() + " " + cursor.getColumnName(0));
         if (cursor.moveToFirst()) {
             do {
                 contact = new EmergencyContact(cursor.getString(0), cursor.getString(1));
