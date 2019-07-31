@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 public class Trail_List_Activity extends AppCompatActivity implements TrailListFragment.OnTrailSelectedListener {
@@ -13,6 +14,9 @@ public class Trail_List_Activity extends AppCompatActivity implements TrailListF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trail_list);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Trail list");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.list_fragment_container);

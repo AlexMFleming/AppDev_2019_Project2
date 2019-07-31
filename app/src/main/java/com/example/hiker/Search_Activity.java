@@ -2,6 +2,7 @@ package com.example.hiker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -40,10 +41,20 @@ public class Search_Activity extends AppCompatActivity {
     int waterfallfeature;
     int creekfeature;
     int wildlifefeature;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+//        actionBar = getSupportActionBar();
+//        actionBar.setTitle("Search Trail");
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Search for a trail");
 
         hikeLengthGroup = findViewById(R.id.radioGroup);
         elevationGroup = findViewById(R.id.radioGroup2);
@@ -129,6 +140,8 @@ public class Search_Activity extends AppCompatActivity {
             intent.putExtra("WILDLIFE", wildlifefeature);
             startActivity(intent);
         }
+
+
 
 //    public void searchTrails(View view){
 //        EditText text = (EditText)findViewById(R.id.distanceLowerBoundView);

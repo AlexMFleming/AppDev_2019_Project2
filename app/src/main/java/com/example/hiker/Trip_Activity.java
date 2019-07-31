@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,10 @@ public class Trip_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Start a hike");
+
         departureDateView = findViewById(R.id.departureDateView);
         returnDateView = findViewById(R.id.returnDateView);
         returnTimeView = findViewById(R.id.returnTimeView);

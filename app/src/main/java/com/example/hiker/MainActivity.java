@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findATrail(v);
         } else if (v== planATripButton) {
             planATrip(v);
+        } else {
+            return;
         }
     }
 }

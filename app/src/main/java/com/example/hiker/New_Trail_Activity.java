@@ -11,8 +11,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,10 +39,17 @@ public class New_Trail_Activity extends AppCompatActivity {
     private final int REQUEST_STATION_CODE =5;
     Uri imageUri;
     private Long stationId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trail);
+
+        getSupportActionBar().setTitle("New Trails");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         generatedThumbnail = findViewById(R.id.camera_frame);
         frameLayoutText = findViewById(R.id.text_frame);
@@ -53,6 +62,22 @@ public class New_Trail_Activity extends AppCompatActivity {
             }
         });
         TrailDb = TrailDatabase.getInstance(getApplicationContext());//get database instance for every new activity, we dont have to pass it through intent
+
+//        //Adds the toolbar
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void dispatchTakePictureIntent() {
