@@ -1,6 +1,9 @@
 package com.example.hiker;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.content.ContextCompat;
 import android.content.Intent;
@@ -149,8 +152,10 @@ public class DetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.addImage:
-                Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                if(hasFilePermissions()) {
+                    Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
                 break;
             case R.id.deleteTrail:
                 TrailDatabase.getInstance(getContext()).deleteTrail(mTrail.getTrail_id());
@@ -162,6 +167,31 @@ public class DetailsFragment extends Fragment {
                 break;
         }
         return false;
+    }
+    private boolean hasFilePermissions(){
+        String writePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        if(ContextCompat.checkSelfPermission(getContext(), writePermission)!= PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{ writePermission }, REQUEST_WRITE_CODE);
+
+        }return true;
+    }
+
+    private void showPermissionRationaleDialog() {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int [] grantResults) {
+        switch(requestCode) {
+            case REQUEST_WRITE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// Permission granted!}else{// Permission denied!}return;
+                } else {
+
+                }
+                return;
+            }
+        }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bitmap imageBitmap;
