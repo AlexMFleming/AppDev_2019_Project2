@@ -1,5 +1,6 @@
 # Hiker App
-Hiker is an app for discovering and recording your favorite hiking trails. One of the main features is an emergency messaging system that alerts the emergency contact if the user fails to confirm their safe return from the trail. 
+Hiker is an app for discovering and recording your favorite hiking trails. One of the main features is an emergency messaging system that alerts the emergency contact if the user fails to confirm their safe return from the trail.
+This app stores data locally, no sharing of data between users. 
 
 **SCREENSHOTS**
 
